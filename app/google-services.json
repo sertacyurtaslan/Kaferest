@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "552740665747",
+    "project_id": "cafely-d972a",
+    "storage_bucket": "cafely-d972a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:552740665747:android:7f1ff561060a79b21f5066",
+        "android_client_info": {
+          "package_name": "com.example.cafely"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "552740665747-3907du8uo3usgd0liqpla1plm2fqgh54.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_W1i_ks5yOk7yns1qPmAJTcpamDqBk6g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "552740665747-3907du8uo3usgd0liqpla1plm2fqgh54.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
