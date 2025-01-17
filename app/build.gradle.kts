@@ -9,11 +9,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.cafely"
+    namespace = "com.example.kaferest"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.cafely"
+        applicationId = "com.example.kaferest"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -35,21 +35,34 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.8"
     }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/DEPENDENCIES"
+            excludes += "META-INF/LICENSE"
+            excludes += "META-INF/LICENSE.txt"
+            excludes += "META-INF/license.txt"
+            excludes += "META-INF/NOTICE"
+            excludes += "META-INF/NOTICE.txt"
+            excludes += "META-INF/notice.txt"
+            excludes += "META-INF/*.kotlin_module"
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/NOTICE.md"
+            excludes += "META-INF/*.properties"
+            excludes += "META-INF/mailcap"
+            excludes += "META-INF/mimetypes.default"
         }
     }
 }
@@ -63,9 +76,7 @@ kapt {
 }
 
 ksp {
-    java {
-        version = "18"
-    }
+    arg("jvm.target", "17")
 }
 
 dependencies {
@@ -74,6 +85,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.play.services.auth.v2070)
 
     // Other dependencies
     implementation(libs.androidx.ui)
@@ -81,6 +93,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidWork)
     implementation(libs.play.services.auth)
+    implementation(libs.sendgrid.java)
 
     // Firebase and Room dependencies
     implementation(libs.firebase.firestore)
@@ -120,4 +133,35 @@ dependencies {
     // Debugging tools
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Add Retrofit dependencies
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
+
+    // AWS SDK dependencies
+    implementation(libs.aws.java.sdk.ses) {
+        exclude(group = "com.amazonaws", module = "aws-java-sdk-core")
+        exclude(group = "org.apache.httpcomponents", module = "httpclient")
+    }
+    implementation("com.amazonaws:aws-java-sdk-core:1.12.621") {
+        exclude(group = "org.apache.httpcomponents", module = "httpclient")
+        exclude(group = "org.apache.httpcomponents", module = "httpcore")
+    }
+    implementation(libs.okhttp)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.core)
+
+    // Remove previous AWS dependencies
+    implementation(libs.android.mail)
+    implementation(libs.android.activation)
+
+    // Google Sign In
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    
+    // Firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-firestore-ktx")
 }

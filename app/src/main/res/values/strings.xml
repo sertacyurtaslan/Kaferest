@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Cafely</string>
-    <string name="app_name_capitalized">CAFELY</string>
+    <string name="app_name">Kaferest</string>
+    <string name="app_name_capitalized">KAFEREST</string>
     <string name="create_your_account">Create your\naccount.</string>
     <string name="sign_up">Sign Up</string>
     <string name="name">Name</string>
@@ -15,7 +15,7 @@
     <string name="continue_with_google">Continue with Google</string>
     <string name="email_icon">Email Icon</string>
     <string name="continue_with_email">Continue with email</string>
-    <string name="web_client_id">552740665747-3907du8uo3usgd0liqpla1plm2fqgh54.apps.googleusercontent.com</string>
+    <string name="web_client_id">1069330761760-v5a244smi69hj8vdv8icfu87s5i07tdj.apps.googleusercontent.com</string>
     <string name="language">Language</string>
     <string name="clear_text">Clear text</string>
     <string name="show_password">Show password</string>
@@ -42,5 +42,19 @@
     <string name="already_have_an_account_log_in">Already have an account? Log In</string>
     <string name="admin_login">Admin Login</string>
     <string name="forgot_password">Forgot password?</string>
-    <string name="ready_to_dive_into_your_shop_let_s_get_started">Ready to dive into your shop?\\nLet\'s get started!</string>
+    <string name="ready_to_dive_into_your_shop">Ready to dive into your shop?</string>
+    <string name="let_get_started">Let\'s get started!</string>
+    <string name="we_sent_you_verification_code">We sent you a verification code</string>
+    <string name="please_enter_below">Please enter below</string>
+    <string name="confirm">Confirm</string>
+    <string name="verification_code">Verification Code</string>
+    <string name="verify_mail">Verify Mail</string>
+    <string name="check_your_email">Check your email</string>
+    <string name="at_least_10_characters">At least 10 characters</string>
+    <string name="contains_a_special_character">Contains a special character</string>
+    <string name="turkish">Turkish</string>
+    <string name="english">English</string>
+    <string name="resend_code">Resend Code</string>
+    <string name="resend_code_in_seconds">Resend Code in %d seconds</string>
+
 </resources>

@@ -12,4 +12,14 @@ plugins {
     alias(libs.plugins.kspAndroid) apply false
     alias(libs.plugins.daggerHilt) apply false
 }
+
+// Add this to ensure consistent versions
+allprojects {
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+        kotlinOptions {
+            jvmTarget = "17"
+        }
+    }
+}
+
 true
