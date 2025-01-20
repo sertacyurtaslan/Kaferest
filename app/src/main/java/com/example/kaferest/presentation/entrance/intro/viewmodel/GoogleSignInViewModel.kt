@@ -2,7 +2,7 @@ package com.example.kaferest.presentation.entrance.intro.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kaferest.domain.repository.CafelyRepository
+import com.example.kaferest.domain.repository.KaferestRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GoogleSignInViewModel @Inject constructor(
-    private val cafelyRepository: CafelyRepository,
+    private val kaferestRepository: KaferestRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(GoogleSignInState())
@@ -30,18 +30,41 @@ class GoogleSignInViewModel @Inject constructor(
                     println("GoogleSignIn: User ID: $userId")
                     try {
                         withContext(Dispatchers.IO) {
-                            val user = cafelyRepository.getUser(userId)
-                            if (user != null) {
-                                println("GoogleSignIn: Existing user found")
-                                _state.value = GoogleSignInState(isSignInSuccessful = true, user = user)
-                            } else {
-                                println("GoogleSignIn: Creating new user")
-                                val newUser = cafelyRepository.createUser(signInResult.data)
+                            // First check if user exists in Firestore
+                            val existingUser = kaferestRepository.getUser(userId)
+                            
+                            if (existingUser != null) {
+                                println("GoogleSignIn: Existing user found, signing in")
                                 _state.value = GoogleSignInState(
-                                    isSignInSuccessful = true,
-                                    user = newUser,
-                                    isNewUser = true
+                                    isSignInSuccessful = true, 
+                                    user = existingUser
                                 )
+                            } else {
+                                // Check if email exists in authentication but not in Firestore
+                                val userByEmail = signInResult.data.userEmail?.let {
+                                    kaferestRepository.getUserByEmail(
+                                        it
+                                    )
+                                }
+                                
+                                if (userByEmail != null) {
+                                    println("GoogleSignIn: User with email exists, updating auth ID")
+                                    // Update the existing user with new auth ID
+                                    val updatedUser = userByEmail.copy(userId = userId)
+                                    kaferestRepository.updateUser(updatedUser)
+                                    _state.value = GoogleSignInState(
+                                        isSignInSuccessful = true,
+                                        user = updatedUser
+                                    )
+                                } else {
+                                    println("GoogleSignIn: Creating new user")
+                                    val newUser = kaferestRepository.createUser(signInResult.data)
+                                    _state.value = GoogleSignInState(
+                                        isSignInSuccessful = true,
+                                        user = newUser,
+                                        isNewUser = true
+                                    )
+                                }
                             }
                         }
                     } catch (e: Exception) {

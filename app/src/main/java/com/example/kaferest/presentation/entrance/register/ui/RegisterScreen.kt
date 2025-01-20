@@ -22,6 +22,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -44,18 +45,23 @@ fun RegisterScreen(
     navController: NavController,
     viewModel: RegisterViewModel
 ) {
-
     val nameState = remember { mutableStateOf("") }
     val emailState = remember { mutableStateOf("") }
     val passwordState = remember { mutableStateOf("") }
 
     val state = viewModel.uiState.value
 
-    /*
-    if (state.isRegistered) {
-        navController.navigate(Screen.PreferencesScreen.route)
+    LaunchedEffect(state.isMailVerified) {
+        if (state.isMailVerified) {
+            RegisterScreenEvent.SendVerificationMail(
+                userName = nameState.toString(),
+                userMail = emailState.toString(),
+                userPassword = passwordState.toString()
+            )
+            navController.navigate(Screen.EmailVerificationScreen.route)
+            viewModel.resetNavigation()
+        }
     }
-     */
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Scaffold { paddingValue ->
@@ -145,20 +151,11 @@ fun RegisterScreen(
                         //Sign Up button
                         CustomButton(
                             onClick = {
-                                /*
-                                viewModel.onEvent(RegisterScreenEvent.SetTempUserData(
-                                    nameState.value,
-                                    emailState.value,
-                                    passwordState.value
-                                ))
-
-                                 */
                                 viewModel.onEvent(
-                                    RegisterScreenEvent.SendVerificationMail(
-                                        emailState.value,
+                                    RegisterScreenEvent.CheckEmailExists(
+                                        email = emailState.value
                                     )
                                 )
-                                navController.navigate(Screen.EmailVerificationScreen.route)
                             },
                             modifier = Modifier.fillMaxWidth(),
                             isOutlined = false,

@@ -3,7 +3,7 @@ package com.example.kaferest.presentation.entrance.intro.viewmodel
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
-import com.example.kaferest.R
+import com.example.kaferest.data.credentials.Credentials
 import com.example.kaferest.domain.model.User
 import com.example.kaferest.util.CurrentDate
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
@@ -27,7 +27,7 @@ class GoogleAuthUiClient(
                 .setGoogleIdTokenRequestOptions(
                     GoogleIdTokenRequestOptions.builder()
                         .setSupported(true)
-                        .setServerClientId(context.getString(R.string.web_client_id))
+                        .setServerClientId(Credentials.WEB_CLIENT_ID)
                         .setFilterByAuthorizedAccounts(false)
                         .build()
                 )

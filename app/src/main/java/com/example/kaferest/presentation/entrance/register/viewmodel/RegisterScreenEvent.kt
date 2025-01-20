@@ -8,10 +8,16 @@ sealed class RegisterScreenEvent {
     ): RegisterScreenEvent()
 
     data class SendVerificationMail(
-        val userMail: String = ""
+        val userName: String = "",
+        val userMail: String = "",
+        val userPassword: String = ""
     ): RegisterScreenEvent()
 
     data class VerifyCodeAndRegister(
         val inputCode: String = ""
+    ): RegisterScreenEvent()
+
+    data class CheckEmailExists(
+        val email: String
     ): RegisterScreenEvent()
 }

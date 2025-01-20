@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.core.view.WindowCompat
 import com.example.kaferest.data.prefs.PreferenceManager
 import com.example.kaferest.presentation.navigation.ScreensNavigation
-import com.example.kaferest.ui.theme.CafelyTheme
+import com.example.kaferest.ui.theme.KaferestTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 import javax.inject.Inject
@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         
         setContent {
-            CafelyTheme {
+            KaferestTheme {
                 ScreensNavigation()
             }
         }

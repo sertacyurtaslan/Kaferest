@@ -1,19 +1,21 @@
 package com.example.kaferest.util
 
-import android.annotation.SuppressLint
 import android.util.Log
-import com.example.kaferest.data.credentials.Credentials
+import com.example.kaferest.data.credentials.Credentials.FROM_EMAIL
+import com.example.kaferest.data.credentials.Credentials.FROM_NAME
+import com.example.kaferest.data.credentials.Credentials.SMTP_HOST
+import com.example.kaferest.data.credentials.Credentials.SMTP_PASSWORD
+import com.example.kaferest.data.credentials.Credentials.SMTP_PORT
+import com.example.kaferest.data.credentials.Credentials.SMTP_USERNAME
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.Properties
 import javax.mail.*
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
-object AmazonSESUtil {
-    private const val TAG = "AmazonSESUtil"
+object MailSender {
+    private const val TAG = "EmailService"
 
     suspend fun sendVerificationEmail(
         toEmail: String,
@@ -27,27 +29,25 @@ object AmazonSESUtil {
             Log.d(TAG, "Sending verification email to: $toEmail")
 
             val props = Properties().apply {
-                put("mail.transport.protocol", "smtp")
-                put("mail.smtp.port", Credentials.SMTP_PORT)
-                put("mail.smtp.starttls.enable", "true")
-                put("mail.smtp.starttls.required", "true")
                 put("mail.smtp.auth", "true")
+                put("mail.smtp.starttls.enable", "true")
+                put("mail.smtp.host", SMTP_HOST)
+                put("mail.smtp.port", SMTP_PORT)
                 put("mail.smtp.ssl.protocols", "TLSv1.2")
-                put("mail.smtp.host", Credentials.SMTP_HOST)
-                put("mail.debug", "true")
+                put("mail.smtp.ssl.trust", SMTP_HOST)
             }
 
             val session = Session.getInstance(props, object : Authenticator() {
                 override fun getPasswordAuthentication(): PasswordAuthentication {
-                    return PasswordAuthentication(Credentials.ACCESS_KEY, Credentials.SECRET_KEY)
+                    return PasswordAuthentication(SMTP_USERNAME, SMTP_PASSWORD)
                 }
             })
 
             val message = MimeMessage(session).apply {
-                setFrom(InternetAddress(Credentials.FROM_EMAIL, Credentials.FROM_NAME))
+                setFrom(InternetAddress(FROM_EMAIL, FROM_NAME))
                 setRecipient(Message.RecipientType.TO, InternetAddress(toEmail))
-                subject = "Welcome to Cafely - Verify Your Email"
-                setContent(EmailTemplate.getVerificationEmailTemplate(verificationCode), "text/html; charset=utf-8")
+                subject = "Welcome to Kaferest - Verify Your Email"
+                setContent(VerificationMail.getVerificationEmailTemplate(verificationCode), "text/html; charset=utf-8")
             }
 
             var attemptCount = 0
@@ -81,11 +81,6 @@ object AmazonSESUtil {
 
     private fun isValidEmail(email: String): Boolean {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    }
-
-    @SuppressLint("NewApi")
-    private fun getCurrentTimestamp(): String {
-        return LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
     }
 
     private fun getBackoffDelay(attempt: Int): Long {

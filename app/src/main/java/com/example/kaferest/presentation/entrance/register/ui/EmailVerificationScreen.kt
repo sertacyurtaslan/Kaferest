@@ -11,18 +11,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.kaferest.R
 import com.example.kaferest.presentation.components.ButtonContent
 import com.example.kaferest.presentation.components.CustomButton
 import com.example.kaferest.presentation.components.CustomIconTextField
 import com.example.kaferest.presentation.entrance.register.viewmodel.RegisterScreenEvent
 import com.example.kaferest.presentation.entrance.register.viewmodel.RegisterViewModel
-import com.example.kaferest.ui.theme.CafelyTheme
+import com.example.kaferest.presentation.navigation.Screen
 import com.example.kaferest.ui.theme.Typography
 
 @Composable
@@ -33,18 +30,16 @@ fun EmailVerificationScreen(
     val state = viewModel.uiState.value
     val canResend by viewModel.canResend.collectAsState()
     val remainingSeconds by viewModel.remainingSeconds.collectAsState()
-    
+
+    val codeState = remember { mutableStateOf("") }
+
     LaunchedEffect(state.isRegistered) {
+
         if (state.isRegistered) {
-            /*
-            navController.navigate(Screen.PreferencesScreen.route) {
-                popUpTo(Screen.RegisterScreen.route) { inclusive = true }
-            }
-             */
+            navController.navigate(Screen.HomeScreen.route)
         }
     }
 
-    val codeState = remember { mutableStateOf("") }
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -58,7 +53,6 @@ fun EmailVerificationScreen(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    //.background(CoffeeGradientLight)
                     .padding(paddingValue)
                     .padding(20.dp)
                     .fillMaxSize()

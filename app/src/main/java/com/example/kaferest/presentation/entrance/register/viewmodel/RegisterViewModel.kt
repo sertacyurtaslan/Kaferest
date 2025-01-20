@@ -5,9 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kaferest.domain.model.User
-import com.example.kaferest.domain.repository.CafelyRepository
+import com.example.kaferest.domain.repository.KaferestRepository
 import com.example.kaferest.util.CurrentDate
-import com.example.kaferest.util.AmazonSESUtil
+import com.example.kaferest.util.MailSender
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +22,7 @@ import kotlin.random.Random
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val repository: CafelyRepository,
+    private val repository: KaferestRepository,
     private val auth: FirebaseAuth,
     private val db: FirebaseFirestore
 ) : ViewModel() {
@@ -36,8 +36,6 @@ class RegisterViewModel @Inject constructor(
     private val _remainingSeconds = MutableStateFlow(0)
     val remainingSeconds: StateFlow<Int> = _remainingSeconds.asStateFlow()
 
-    // Store verification code as a property instead of in state
-    // private var verificationCode: String = ""
 
     init {
         db.collection("users").addSnapshotListener { snapshot, exception ->
@@ -71,6 +69,7 @@ class RegisterViewModel @Inject constructor(
                         userCreationDate = CurrentDate().getFormattedDate()
                     )
                     saveUserToFirestore(user, userId)
+                    _uiState.value = _uiState.value.copy(isRegistered = true)
                 }
                 .addOnFailureListener { exception ->
                     println("RegisterViewModel: Failed to create user - ${exception.localizedMessage}")
@@ -93,16 +92,19 @@ class RegisterViewModel @Inject constructor(
                 }
         }
 
-    private fun sendVerificationMail(email: String) = viewModelScope.launch {
+    private fun sendVerificationMail(userName: String, userMail: String, userPassword: String) =
+        viewModelScope.launch {
         val newCode = generateVerificationCode()
         _uiState.value = _uiState.value.copy(verificationCode = newCode)
         println("Generating verification code: $newCode")
 
-        AmazonSESUtil.sendVerificationEmail(email, newCode)
+        MailSender.sendVerificationEmail(userMail, newCode)
             .onSuccess {
                 _uiState.value = _uiState.value.copy(
                     successMessage = "Verification code sent successfully",
-                    email = email,
+                    userName = userName,
+                    userMail = userMail,
+                    userPassword = userPassword
                 )
             }
 
@@ -120,11 +122,12 @@ class RegisterViewModel @Inject constructor(
     private fun verifyCodeAndRegister(inputCode: String): Boolean {
         println("Stored verification code: ${_uiState.value.verificationCode}")
         println("Input verification code: $inputCode")
-        
+
+        println("_uiState.value.userName, _uiState.value.userMail, _uiState.value.userPassword")
+
         return if (inputCode == _uiState.value.verificationCode && _uiState.value.verificationCode.isNotEmpty()) {
             println("Verification code is correct, proceeding with registration...")
-            println("Burası: ${_uiState.value.name} ${_uiState.value.email} ${_uiState.value.password}")
-            registerUser(_uiState.value.name, _uiState.value.email, _uiState.value.password)
+            registerUser(_uiState.value.userName, _uiState.value.userMail, _uiState.value.userPassword)
             true
         } else {
             println("Verification failed. Input: $inputCode, Expected: ${_uiState.value.verificationCode}")
@@ -140,7 +143,6 @@ class RegisterViewModel @Inject constructor(
             _canResend.value = false
             _remainingSeconds.value = 60
             
-            // Start countdown timer
             viewModelScope.launch {
                 while (_remainingSeconds.value > 0) {
                     delay(1000)
@@ -148,9 +150,61 @@ class RegisterViewModel @Inject constructor(
                 }
                 _canResend.value = true
             }
-            println("Mail to resend:"+_uiState.value.email)
-            // Resend the email
-            sendVerificationMail(_uiState.value.email)
+            println("Mail to resend:"+_uiState.value.userMail)
+
+            sendVerificationMail(
+                _uiState.value.userName,
+                _uiState.value.userMail,
+                _uiState.value.userPassword)
+        }
+    }
+
+    fun resetNavigation(){
+        _uiState.value = _uiState.value.copy(isMailVerified = false)
+    }
+
+    private fun checkEmailExists(email: String) = viewModelScope.launch {
+        try {
+            auth.createUserWithEmailAndPassword(email, "temporary_password")
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        // Email is available, delete the temporary account
+                        task.result?.user?.delete()?.addOnCompleteListener {
+                            _uiState.value = _uiState.value.copy(
+                                emailError = null,
+                                isMailVerified = true
+                            )
+                            sendVerificationMail(
+                                _uiState.value.userName,
+                                email,
+                                _uiState.value.userPassword
+                            )
+                        }
+                    } else {
+                        val exception = task.exception
+                        when {
+                            // Check specifically for email already in use
+                            exception?.message?.contains("email address is already in use") == true -> {
+                                _uiState.value = _uiState.value.copy(
+                                    emailError = "This email is already registered",
+                                    isMailVerified = false
+                                )
+                            }
+                            // Handle other errors
+                            else -> {
+                                _uiState.value = _uiState.value.copy(
+                                    emailError = exception?.message ?: "Error checking email",
+                                    isMailVerified = false
+                                )
+                            }
+                        }
+                    }
+                }
+        } catch (e: Exception) {
+            _uiState.value = _uiState.value.copy(
+                emailError = e.message ?: "Error checking email",
+                isMailVerified = false
+            )
         }
     }
 
@@ -159,13 +213,14 @@ class RegisterViewModel @Inject constructor(
             is RegisterScreenEvent.RegisterUser -> {
                 registerUser(event.userName, event.userMail, event.userPassword)
             }
-
             is RegisterScreenEvent.SendVerificationMail -> {
-                sendVerificationMail(event.userMail)
+                sendVerificationMail(event.userName, event.userMail, event.userPassword)
             }
-
             is RegisterScreenEvent.VerifyCodeAndRegister -> {
                 verifyCodeAndRegister(event.inputCode)
+            }
+            is RegisterScreenEvent.CheckEmailExists -> {
+                checkEmailExists(event.email)
             }
         }
     }

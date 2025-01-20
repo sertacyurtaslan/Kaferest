@@ -37,7 +37,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.kaferest.R
 import com.example.kaferest.presentation.components.CustomIconTextField
-import com.example.financecompose.presentation.entrance.forgot_password.ui.PasswordResetDialog
 import com.example.kaferest.presentation.entrance.forgot_password.viewmodel.ForgotPasswordScreenEvent
 import com.example.kaferest.presentation.entrance.forgot_password.viewmodel.ForgotPasswordViewModel
 import com.example.kaferest.presentation.navigation.Screen

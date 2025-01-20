@@ -2,9 +2,9 @@ package com.example.kaferest.data.di
 
 import android.app.Application
 import android.content.Context
-import com.example.kaferest.data.firebase.CafelyRepositoryImpl
+import com.example.kaferest.data.firebase.KaferestRepositoryImpl
 import com.example.kaferest.data.prefs.PreferenceManager
-import com.example.kaferest.domain.repository.CafelyRepository
+import com.example.kaferest.domain.repository.KaferestRepository
 import com.example.kaferest.presentation.entrance.intro.viewmodel.GoogleAuthUiClient
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.firebase.auth.FirebaseAuth
@@ -42,8 +42,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideFinanceRepository(firestore: FirebaseFirestore): CafelyRepository =
-        CafelyRepositoryImpl(firestore)
+    fun provideKaferestRepository(firestore: FirebaseFirestore): KaferestRepository =
+        KaferestRepositoryImpl(firestore)
 
     @Provides
     @Singleton

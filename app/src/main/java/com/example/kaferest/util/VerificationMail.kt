@@ -1,6 +1,6 @@
 package com.example.kaferest.util
 
-object EmailTemplate {
+object VerificationMail {
     fun getVerificationEmailTemplate(verificationCode: String): String = """
         <!DOCTYPE html>
         <html>
