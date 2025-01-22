@@ -7,9 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,16 +18,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -37,6 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.kaferest.R
 import com.example.kaferest.presentation.components.CustomIconTextField
+import com.example.kaferest.presentation.components.MenuBackButton
 import com.example.kaferest.presentation.entrance.forgot_password.viewmodel.ForgotPasswordScreenEvent
 import com.example.kaferest.presentation.entrance.forgot_password.viewmodel.ForgotPasswordViewModel
 import com.example.kaferest.presentation.navigation.Screen
@@ -48,6 +45,7 @@ fun ForgotPasswordScreen(
     viewModel: ForgotPasswordViewModel = hiltViewModel()
 ) {
 
+    val canResend by viewModel.canResend.collectAsState()
     val emailState = remember { mutableStateOf("") }
     var emailError: Boolean by remember { mutableStateOf(false) }
     var showDialog: Boolean by remember { mutableStateOf(false) }
@@ -64,19 +62,11 @@ fun ForgotPasswordScreen(
                     .padding(20.dp)
                     .fillMaxSize()
             ) {
-                // Back button
-                IconButton(onClick = {
-                    navController.navigate(Screen.LoginScreen.route)
-                }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.baseline_keyboard_backspace_24),
-                        contentDescription = stringResource(id = R.string.back),
-                    )
-                }
+                // <- Navigate back to the LoginScreen
+                MenuBackButton(onClick = {navController.navigate(Screen.LoginScreen.route)})
 
                 Spacer(modifier = Modifier.height(30.dp))
 
-                // Welcome back text
                 Text(
                     text = stringResource(R.string.enter_the_email_adress_you_used_to_sign_in),
                     style = Typography.headlineLarge,
@@ -84,7 +74,7 @@ fun ForgotPasswordScreen(
 
                 Spacer(modifier = Modifier.height(100.dp))
 
-                // Login form
+                //Password reset card
                 Card(
                     shape = RoundedCornerShape(50.dp),
                     modifier = Modifier
@@ -95,21 +85,15 @@ fun ForgotPasswordScreen(
                         modifier = Modifier.padding(18.dp),
                         verticalArrangement = Arrangement.Center
                     ) {
-                        // Login title
                         Text(
                             text = stringResource(R.string.password_reset),
-                            fontSize = 30.sp,
-                            /*
-                            fontWeight = FontWeight.Light,
-                            fontFamily = FontFamily(Font(R.font.kanit)),
-
-                             */
+                            style = Typography.displaySmall,
                             modifier = Modifier.align(Alignment.CenterHorizontally)
                         )
 
                         Spacer(modifier = Modifier.height(20.dp))
 
-
+                        //Email
                         CustomIconTextField(
                             stringState = emailState,
                             text = stringResource(id = R.string.email),
@@ -120,15 +104,14 @@ fun ForgotPasswordScreen(
                         )
                         if (emailError) {
                             Text(
-                                text = "*Invalid email format",
+                                text = "Invalid mail format",
                                 color = Color.Red,
-                                fontSize = 12.sp,
                                 modifier = Modifier.padding(top = 8.dp)
                             )
                         }
                         Spacer(modifier = Modifier.height(35.dp))
 
-                        // Send mail button
+                        //Check if its a correct mail pattern
                         Button(
                             onClick = {
                                 if (android.util.Patterns.EMAIL_ADDRESS.matcher(emailState.value).matches()) {
@@ -139,19 +122,18 @@ fun ForgotPasswordScreen(
                                     emailError = true
                                 }
                             },
-                            //colors = ButtonDefaults.buttonColors(Seapl),
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Text(text = stringResource(R.string.send_email))
                         }
 
                         Spacer(modifier = Modifier.height(10.dp))
+
                         Text(
                             text = stringResource(R.string.we_ll_send_you_a_password_reset_mail),
-                            fontSize = 17.sp,
-                            fontWeight = FontWeight.Normal,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.align(Alignment.CenterHorizontally)
+                            style = Typography.titleMedium,
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Center
                         )
                     }
                 }
@@ -162,12 +144,9 @@ fun ForgotPasswordScreen(
                         onReturnSignIn = {
                             navController.navigate(Screen.LoginScreen.route)
                         },
-                        onResendEmail = {viewModel.onEvent(
-                            ForgotPasswordScreenEvent
-                            .SendPasswordResetMail(
-                                emailState.value
-                            ))
-                        }
+                        onResendEmail = {viewModel.resendVerificationEmail()
+                        },
+                        viewModel = viewModel
                     )
                 }
             }

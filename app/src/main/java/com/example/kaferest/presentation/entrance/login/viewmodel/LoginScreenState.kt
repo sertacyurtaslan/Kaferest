@@ -7,6 +7,7 @@ data class LoginScreenState(
     val email: String = "",
     val password: String = "",
     val matchError: String? = null,
+    val isLoading: Boolean = false,
     val errorMessage: String? = null,
     val successMessage: String? = null
 )

@@ -36,7 +36,6 @@ class RegisterViewModel @Inject constructor(
     private val _remainingSeconds = MutableStateFlow(0)
     val remainingSeconds: StateFlow<Int> = _remainingSeconds.asStateFlow()
 
-
     init {
         db.collection("users").addSnapshotListener { snapshot, exception ->
             if (exception != null) {
@@ -165,8 +164,14 @@ class RegisterViewModel @Inject constructor(
 
     private fun checkEmailExists(email: String) = viewModelScope.launch {
         try {
+            // Set loading state to true when starting the check
+            _uiState.value = _uiState.value.copy(isLoading = true)
+            
             auth.createUserWithEmailAndPassword(email, "temporary_password")
                 .addOnCompleteListener { task ->
+                    // Set loading state to false when check is complete
+                    _uiState.value = _uiState.value.copy(isLoading = false)
+                    
                     if (task.isSuccessful) {
                         // Email is available, delete the temporary account
                         task.result?.user?.delete()?.addOnCompleteListener {
@@ -203,7 +208,8 @@ class RegisterViewModel @Inject constructor(
         } catch (e: Exception) {
             _uiState.value = _uiState.value.copy(
                 emailError = e.message ?: "Error checking email",
-                isMailVerified = false
+                isMailVerified = false,
+                isLoading = false
             )
         }
     }

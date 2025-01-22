@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,31 +18,20 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 
-sealed class ButtonContent {
-
-    data class IconContent(
-        val imageVector: ImageVector,
-        val contentDescription: String?,
-        val tint: Color = Color.Unspecified) : ButtonContent()
-
-    data class ImageContent(
-        val painter: Painter,
-        val contentDescription: String,
-        val imageModifier: Modifier
-    ) : ButtonContent()
-}
-
 @Composable
 fun CustomButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     isOutlined: Boolean = false,
+    enabled: Boolean = true,
     buttonContent: ButtonContent,
     text: String,
     style: TextStyle
 ) {
     if (isOutlined) {
-        OutlinedButton(onClick = onClick, modifier = modifier
+        OutlinedButton(
+            onClick = onClick,
+            modifier = modifier,
         ) {
             Row (
                 verticalAlignment = Alignment.CenterVertically,
@@ -69,7 +60,13 @@ fun CustomButton(
     } else {
         Button(
             onClick = onClick,
-            modifier = modifier
+            modifier = modifier,
+            enabled = enabled,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = if (enabled) MaterialTheme.colorScheme.primary
+                else MaterialTheme.colorScheme.primary.copy(alpha = 0.6f),
+                disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
+            )
         ) {
             Row (
                 verticalAlignment = Alignment.CenterVertically,
@@ -96,4 +93,17 @@ fun CustomButton(
             }
         }
     }
+}
+sealed class ButtonContent {
+
+    data class IconContent(
+        val imageVector: ImageVector,
+        val contentDescription: String?,
+        val tint: Color = Color.Unspecified) : ButtonContent()
+
+    data class ImageContent(
+        val painter: Painter,
+        val contentDescription: String,
+        val imageModifier: Modifier
+    ) : ButtonContent()
 }

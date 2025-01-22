@@ -40,7 +40,6 @@ fun EmailVerificationScreen(
         }
     }
 
-
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
@@ -48,8 +47,6 @@ fun EmailVerificationScreen(
         Scaffold(
             containerColor = MaterialTheme.colorScheme.background
         ) { paddingValue ->
-
-
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
@@ -57,7 +54,6 @@ fun EmailVerificationScreen(
                     .padding(20.dp)
                     .fillMaxSize()
             ) {
-
                 Text(
                     text = stringResource(R.string.check_your_email),
                     style = Typography.displayMedium,
@@ -108,7 +104,8 @@ fun EmailVerificationScreen(
                         Spacer(modifier = Modifier.height(20.dp))
 
                         CustomButton(
-                            onClick = { viewModel.onEvent(
+                            onClick = {
+                                viewModel.onEvent(
                                 RegisterScreenEvent.VerifyCodeAndRegister(codeState.value)
                             )},
                             modifier = Modifier.fillMaxWidth(),
@@ -120,6 +117,13 @@ fun EmailVerificationScreen(
                             text = stringResource(R.string.verify_mail),
                             style = Typography.titleMedium
                         )
+
+                        if (state.isLoading) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(24.dp),
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                        }
 
                         Spacer(modifier = Modifier.height(10.dp))
 

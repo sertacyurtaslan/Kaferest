@@ -15,19 +15,22 @@ class LoginViewModel @Inject constructor(
     private val auth: FirebaseAuth
 ) : ViewModel() {
 
-    private val _uiState = mutableStateOf(HomeScreenState())
-    val uiState: State<HomeScreenState> = _uiState
+    private val _uiState = mutableStateOf(LoginScreenState())
+    val uiState: State<LoginScreenState> = _uiState
 
     private fun loginUser(email: String, password: String) =
         viewModelScope.launch {
+                _uiState.value = _uiState.value.copy(isLoading = true)
                 auth.signInWithEmailAndPassword(email, password)
                     .addOnSuccessListener {
                         _uiState.value = _uiState.value.copy(successMessage = "Login successful")
+                        _uiState.value = _uiState.value.copy(isLoading = false)
                     }
                     .addOnFailureListener { exception ->
+                        _uiState.value = _uiState.value.copy(isLoading = false)
                         _uiState.value = _uiState.value.copy(
                             errorMessage = exception.localizedMessage,
-                            matchError = "*Check your email and password"
+                            matchError = "Check your email and password"
                             )
                     }
             }

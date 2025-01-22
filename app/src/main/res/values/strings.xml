@@ -55,5 +55,8 @@
     <string name="english">English</string>
     <string name="resend_code">Resend Code</string>
     <string name="resend_code_in_seconds">Resend Code in %d seconds</string>
+    <string name="check_your_inbox">Check your inbox for an email from Kaferest and follow the instructions to reset your password.</string>
+    <string name="we_ve_sent_a_password_reset_email">We\'ve sent a password reset email.</string>
+    <string name="incorrect_email_or_password">Incorrect email or password.</string>
 
 </resources>

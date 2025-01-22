@@ -12,5 +12,6 @@ data class RegisterScreenState(
     val errorMessage: String? = null,
     val successMessage: String? = null,
     val isRegistered: Boolean = false,
-    val isMailVerified: Boolean = false
+    val isMailVerified: Boolean = false,
+    val isLoading: Boolean = false,
 )
