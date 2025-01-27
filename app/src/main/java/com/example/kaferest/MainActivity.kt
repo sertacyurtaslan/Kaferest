@@ -1,11 +1,18 @@
 package com.example.kaferest
 
+import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.core.view.WindowCompat
+import androidx.activity.viewModels
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.lifecycleScope
 import com.example.kaferest.data.prefs.PreferenceManager
-import com.example.kaferest.presentation.navigation.ScreensNavigation
+import com.example.kaferest.data.preferences.ThemePreferences
+import com.example.kaferest.presentation.menu.settings.viewmodel.SettingsViewModel
+import com.example.kaferest.presentation.navigation.ScreenNavigation
 import com.example.kaferest.ui.theme.KaferestTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
@@ -16,15 +23,20 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var preferenceManager: PreferenceManager
     
+    @Inject
+    lateinit var themePreferences: ThemePreferences
+
+    private val settingsViewModel: SettingsViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         applyLanguage()
         
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        
         setContent {
-            KaferestTheme {
-                ScreensNavigation()
+            val isDarkMode by themePreferences.isDarkMode.collectAsState(initial = false)
+
+            KaferestTheme(darkTheme = isDarkMode) {
+                ScreenNavigation()
             }
         }
     }
@@ -43,8 +55,9 @@ class MainActivity : ComponentActivity() {
         preferenceManager.saveLanguagePreference(languageCode)
         val locale = Locale(languageCode)
         Locale.setDefault(locale)
-        val config = resources.configuration
+        val config = Configuration()
         config.setLocale(locale)
+        baseContext.createConfigurationContext(config)
         resources.updateConfiguration(config, resources.displayMetrics)
 
         if (!applyOnly) {

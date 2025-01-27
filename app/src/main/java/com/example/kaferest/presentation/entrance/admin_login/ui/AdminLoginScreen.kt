@@ -67,16 +67,7 @@ fun AdminLoginScreen(
 
                 Text(
                     text = stringResource(R.string.ready_to_dive_into_your_shop),
-                    style = Typography.displayMedium,
-                    //color = CoffeeBlack
-                )
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Text(
-                    text = stringResource(R.string.let_get_started),
-                    style = Typography.titleMedium,
-                    //color = CoffeeBlack
+                    style = Typography.headlineLarge,
                 )
 
                 Spacer(modifier = Modifier.height(100.dp))
@@ -86,11 +77,6 @@ fun AdminLoginScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight(),
-                    /*
-                    colors = CardDefaults.cardColors(
-                        containerColor = Coffee
-                    )
-                     */
                 ) {
                     Column(
                         modifier = Modifier.padding(15.dp),
@@ -111,7 +97,6 @@ fun AdminLoginScreen(
                             textType = KeyboardType.Email,
                             leadingIcon = Icons.Default.Email,
                             leadIconDesc = stringResource(R.string.email_icon),
-                            //color = CoffeeBlack
                         )
 
                         Spacer(modifier = Modifier.height(10.dp))
@@ -123,7 +108,6 @@ fun AdminLoginScreen(
                             textType = KeyboardType.Password,
                             leadingIcon = Icons.Default.Lock,
                             leadIconDesc = stringResource(R.string.password_icon),
-                            //color = CoffeeBlack
                         )
 
                         Spacer(modifier = Modifier.height(5.dp))

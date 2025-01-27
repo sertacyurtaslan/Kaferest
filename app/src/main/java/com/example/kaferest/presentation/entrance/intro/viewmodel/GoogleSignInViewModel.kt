@@ -1,8 +1,12 @@
 package com.example.kaferest.presentation.entrance.intro.viewmodel
 
+import android.content.Intent
+import android.content.IntentSender
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kaferest.domain.repository.KaferestRepository
+import com.example.kaferest.domain.manager.UserManager
+import com.example.kaferest.presentation.entrance.intro.viewmodel.GoogleAuthUiClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,12 +20,31 @@ import javax.inject.Inject
 @HiltViewModel
 class GoogleSignInViewModel @Inject constructor(
     private val kaferestRepository: KaferestRepository,
+    private val userManager: UserManager,
+    private val googleAuthUiClient: GoogleAuthUiClient
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(GoogleSignInState())
     val state: StateFlow<GoogleSignInState> = _state.asStateFlow()
 
-    fun onSignInResult(signInResult: GoogleSignInResult) =
+    init {
+        checkSignInStatus()
+    }
+
+    private fun checkSignInStatus() = viewModelScope.launch {
+        if (googleAuthUiClient.isUserSignedIn()) {
+            userManager.user.collect { user ->
+                user?.let {
+                    _state.value = GoogleSignInState(
+                        isSignInSuccessful = true,
+                        user = it
+                    )
+                }
+            }
+        }
+    }
+
+    private fun onSignInResult(signInResult: GoogleSignInResult) =
         viewModelScope.launch {
             if (signInResult.isSuccess) {
                 println("GoogleSignIn: Sign in successful")
@@ -95,4 +118,26 @@ class GoogleSignInViewModel @Inject constructor(
                 _state.value = GoogleSignInState(signInError = signInResult.errorMessage)
             }
         }
+
+    suspend fun signOut() = viewModelScope.launch {
+        try {
+            googleAuthUiClient.signOut()
+            _state.value = GoogleSignInState() // Reset state
+        } catch (e: Exception) {
+            println("Error signing out: ${e.message}")
+        }
+    }
+
+    suspend fun signInWithIntent(intent: Intent) {
+        try {
+            val result = googleAuthUiClient.signInWithIntent(intent)
+            onSignInResult(result)
+        } catch (e: Exception) {
+            _state.value = GoogleSignInState(signInError = e.message)
+        }
+    }
+
+    suspend fun signIn(): IntentSender? {
+        return googleAuthUiClient.signIn()
+    }
 }

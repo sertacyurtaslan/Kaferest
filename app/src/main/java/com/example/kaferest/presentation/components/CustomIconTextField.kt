@@ -125,11 +125,6 @@ fun CustomIconTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(height.dp)
-            ,
-            /*colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = CoffeePrimary,
-                unfocusedBorderColor = CoffeePrimaryDark
-            )*/
         )
 
         if (showCharacterCounter && characterLimit != null) {

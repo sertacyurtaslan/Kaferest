@@ -36,19 +36,15 @@ fun EmailVerificationScreen(
     LaunchedEffect(state.isRegistered) {
 
         if (state.isRegistered) {
-            navController.navigate(Screen.HomeScreen.route)
+            navController.navigate(Screen.MainScreen.route)
         }
     }
 
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
-    ) {
-        Scaffold(
-            containerColor = MaterialTheme.colorScheme.background
-        ) { paddingValue ->
+    Surface(modifier = Modifier.fillMaxSize()) {
+        Scaffold { paddingValue ->
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.Top,
                 modifier = Modifier
                     .padding(paddingValue)
                     .padding(20.dp)

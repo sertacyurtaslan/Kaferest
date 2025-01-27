@@ -19,8 +19,8 @@ class ForgotPasswordViewModel @Inject constructor(
     private val auth: FirebaseAuth,
 ) : ViewModel() {
 
-    private val _uiState = mutableStateOf(ForgotPasswordScreenState())
-    val uiState: State<ForgotPasswordScreenState> = _uiState
+    private val _uiState = MutableStateFlow(ForgotPasswordScreenState())
+    val uiState: StateFlow<ForgotPasswordScreenState> = _uiState
 
     private val _canResend = MutableStateFlow(true)
     val canResend: StateFlow<Boolean> = _canResend.asStateFlow()

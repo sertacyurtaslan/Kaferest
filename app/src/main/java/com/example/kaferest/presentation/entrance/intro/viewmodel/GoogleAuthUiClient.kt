@@ -13,10 +13,13 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
+import com.example.kaferest.domain.manager.UserManager
 
-class GoogleAuthUiClient(
+class GoogleAuthUiClient @Inject constructor(
     private val context: Context,
-    private val oneTapClient: SignInClient
+    private val oneTapClient: SignInClient,
+    private val userManager: UserManager
 ) {
     private val auth = Firebase.auth
 
@@ -71,26 +74,29 @@ class GoogleAuthUiClient(
             val authResult = auth.signInWithCredential(googleCredential).await()
             val user = authResult.user
             
-            if (user == null) {
-                println("GoogleSignIn: Firebase user is null")
+            if (user != null) {
+                val userData = User(
+                    userId = user.uid,
+                    userName = user.displayName ?: "",
+                    userEmail = user.email ?: "",
+                    userCreationDate = CurrentDate().getFormattedDate()
+                )
+                
+                // Save user data
+                userManager.saveUser(userData)
+
                 return GoogleSignInResult(
-                    data = null,
-                    errorMessage = "Firebase user is null",
-                    isSuccess = false
+                    data = userData,
+                    errorMessage = null,
+                    isNewUser = authResult.additionalUserInfo?.isNewUser ?: false,
+                    isSuccess = true
                 )
             }
 
             return GoogleSignInResult(
-                data = User(
-                    userId = user.uid,
-                    userName = user.displayName ?: "",
-                    userEmail = user.email ?: "",
-                    userProfilePhoto = user.photoUrl?.toString() ?: "",
-                    userCreationDate = CurrentDate().getFormattedDate()
-                ),
-                errorMessage = null,
-                isNewUser = authResult.additionalUserInfo?.isNewUser ?: false,
-                isSuccess = true
+                data = null,
+                errorMessage = "Firebase user is null",
+                isSuccess = false
             )
         } catch (e: Exception) {
             println("GoogleSignIn: Error in signInWithIntent - ${e.message}")
@@ -103,10 +109,11 @@ class GoogleAuthUiClient(
         }
     }
 
-    fun signOut() {
+    suspend fun signOut()   {
         try {
             auth.signOut()
             oneTapClient.signOut()
+            userManager.clearUser() // Clear saved user data
         } catch (e: Exception) {
             println("GoogleSignIn: Error in signOut - ${e.message}")
         }
@@ -117,8 +124,11 @@ class GoogleAuthUiClient(
             userId = uid,
             userName = displayName ?: "",
             userEmail = email ?: "",
-            userProfilePhoto = photoUrl?.toString() ?: "",
             userCreationDate = "" // You might want to store this in Firestore
         )
+    }
+
+    fun isUserSignedIn(): Boolean {
+        return auth.currentUser != null
     }
 }

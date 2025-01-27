@@ -97,21 +97,25 @@ class RegisterViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(verificationCode = newCode)
         println("Generating verification code: $newCode")
 
-        MailSender.sendVerificationEmail(userMail, newCode)
-            .onSuccess {
-                _uiState.value = _uiState.value.copy(
-                    successMessage = "Verification code sent successfully",
-                    userName = userName,
-                    userMail = userMail,
-                    userPassword = userPassword
-                )
-            }
+        println("username: $userName")
+        println("usermail: $userMail")
+        println("userpassword: $userPassword")
 
-            .onFailure { exception ->
-                _uiState.value = _uiState.value.copy(
-                    errorMessage = exception.message ?: "Failed to send verification email"
-                )
-            }
+        MailSender.sendVerificationEmail(userMail, newCode)
+        .onSuccess {
+            _uiState.value = _uiState.value.copy(
+                successMessage = "Verification code sent successfully",
+                userName = userName,
+                userMail = userMail,
+                userPassword = userPassword
+            )
+        }
+
+        .onFailure { exception ->
+            _uiState.value = _uiState.value.copy(
+                errorMessage = exception.message ?: "Failed to send verification email"
+            )
+        }
     }
 
     private fun generateVerificationCode(): String {
@@ -121,8 +125,6 @@ class RegisterViewModel @Inject constructor(
     private fun verifyCodeAndRegister(inputCode: String): Boolean {
         println("Stored verification code: ${_uiState.value.verificationCode}")
         println("Input verification code: $inputCode")
-
-        println("_uiState.value.userName, _uiState.value.userMail, _uiState.value.userPassword")
 
         return if (inputCode == _uiState.value.verificationCode && _uiState.value.verificationCode.isNotEmpty()) {
             println("Verification code is correct, proceeding with registration...")
@@ -176,14 +178,9 @@ class RegisterViewModel @Inject constructor(
                         // Email is available, delete the temporary account
                         task.result?.user?.delete()?.addOnCompleteListener {
                             _uiState.value = _uiState.value.copy(
-                                emailError = null,
-                                isMailVerified = true
-                            )
-                            sendVerificationMail(
-                                _uiState.value.userName,
-                                email,
-                                _uiState.value.userPassword
-                            )
+                                isMailVerified = true,
+                                emailExistError = false,
+                                )
                         }
                     } else {
                         val exception = task.exception
@@ -191,16 +188,15 @@ class RegisterViewModel @Inject constructor(
                             // Check specifically for email already in use
                             exception?.message?.contains("email address is already in use") == true -> {
                                 _uiState.value = _uiState.value.copy(
-                                    emailError = "This email is already registered",
-                                    isMailVerified = false
+                                    isMailVerified = false,
+                                    emailExistError = true,
                                 )
                             }
                             // Handle other errors
                             else -> {
                                 _uiState.value = _uiState.value.copy(
-                                    emailError = exception?.message ?: "Error checking email",
-                                    isMailVerified = false
-                                )
+                                    isMailVerified = false,
+                                    )
                             }
                         }
                     }
@@ -208,7 +204,6 @@ class RegisterViewModel @Inject constructor(
         } catch (e: Exception) {
             _uiState.value = _uiState.value.copy(
                 emailError = e.message ?: "Error checking email",
-                isMailVerified = false,
                 isLoading = false
             )
         }

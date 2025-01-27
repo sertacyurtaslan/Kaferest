@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.example.kaferest.data.firebase.KaferestRepositoryImpl
 import com.example.kaferest.data.prefs.PreferenceManager
+import com.example.kaferest.domain.manager.UserManager
 import com.example.kaferest.domain.repository.KaferestRepository
 import com.example.kaferest.presentation.entrance.intro.viewmodel.GoogleAuthUiClient
 import com.google.android.gms.auth.api.identity.Identity
@@ -47,10 +48,20 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideGoogleAuthUiClient(@ApplicationContext context: Context): GoogleAuthUiClient {
+    fun provideUserManager(@ApplicationContext context: Context): UserManager {
+        return UserManager(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGoogleAuthUiClient(
+        @ApplicationContext context: Context,
+        userManager: UserManager
+    ): GoogleAuthUiClient {
         return GoogleAuthUiClient(
             context = context,
-            oneTapClient = Identity.getSignInClient(context)
+            oneTapClient = Identity.getSignInClient(context),
+            userManager = userManager
         )
     }
 }

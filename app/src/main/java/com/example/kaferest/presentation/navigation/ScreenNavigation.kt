@@ -8,9 +8,11 @@ import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.kaferest.presentation.entrance.forgot_password.ui.ForgotPasswordScreen
 import com.example.kaferest.presentation.entrance.admin_login.ui.AdminLoginScreen
 import com.example.kaferest.presentation.entrance.intro.ui.IntroScreen
@@ -19,23 +21,61 @@ import com.example.kaferest.presentation.entrance.register.ui.RegisterScreen
 import com.example.kaferest.presentation.entrance.register.ui.EmailVerificationScreen
 import com.example.kaferest.presentation.entrance.register.viewmodel.RegisterViewModel
 import com.example.kaferest.presentation.menu.home.ui.HomeScreen
+import com.example.kaferest.presentation.menu.shops.ui.ShopsScreen
+import com.example.kaferest.presentation.menu.main.ui.MainScreen
+import com.example.kaferest.presentation.menu.shops.ui.ShopDetailScreen
+import com.example.kaferest.presentation.splash.SplashScreen
 
 @Composable
-fun ScreensNavigation(
-) {
+fun ScreenNavigation() {
     val navController = rememberNavController()
-    val sharedViewModel : RegisterViewModel = hiltViewModel()
+    val sharedViewModel: RegisterViewModel = hiltViewModel()
+
     NavHost(
         navController = navController,
-        startDestination = Screen.IntroScreen.route
+        startDestination = Screen.SplashScreen.route
     ) {
+        // Splash
+        composable(Screen.SplashScreen.route) {
+            SplashScreen(navController)
+        }
+        
+        // Entrance
         composable(Screen.IntroScreen.route) { IntroScreen(navController) }
         addComposable(Screen.LoginScreen.route, navController) { LoginScreen(navController) }
         addComposable(Screen.AdminLoginScreen.route, navController) { AdminLoginScreen(navController) }
         addComposable(Screen.ForgotPasswordScreen.route, navController) { ForgotPasswordScreen(navController) }
         addComposable(Screen.RegisterScreen.route, navController) { RegisterScreen(navController, sharedViewModel) }
         addComposable(Screen.EmailVerificationScreen.route, navController) { EmailVerificationScreen(navController, sharedViewModel) }
-        addComposable(Screen.HomeScreen.route, navController) { HomeScreen(navController) }
+
+        // Main Screen with Bottom Navigation
+        addComposable(Screen.MainScreen.route, navController) { 
+            MainScreen(navController) 
+        }
+
+        composable(route = Screen.Home.route) {
+            HomeScreen(navController = navController)
+        }
+
+        composable(route = Screen.ShopsScreen.route) {
+            ShopsScreen(navController = navController)
+        }
+
+        composable(
+            route = Screen.ShopDetail.route,
+            arguments = listOf(
+                navArgument("shopId") {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            val shopId = backStackEntry.arguments?.getString("shopId") ?: ""
+            ShopDetailScreen(
+                shopId = shopId,
+                navController = navController
+            )
+        }
+
     }
 }
 

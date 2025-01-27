@@ -73,7 +73,7 @@ fun LoginScreen(
 
     LaunchedEffect(state.successMessage) {
         if (state.successMessage != null) {
-            navController.navigate(Screen.HomeScreen.route)
+            navController.navigate(Screen.MainScreen.route)
         }
     }
 
@@ -95,11 +95,6 @@ fun LoginScreen(
                     Text(
                         text = stringResource(R.string.welcome_back),
                         style = Typography.displayMedium,
-                    )
-
-                    Text(
-                        text = stringResource(R.string.login_to_continue),
-                        style = Typography.titleMedium,
                     )
 
                     Spacer(modifier = Modifier.height(70.dp))

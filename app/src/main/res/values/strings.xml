@@ -35,7 +35,7 @@
     <string name="sign_in_icon">Sign In Icon</string>
     <string name="sign_up_icon">Sign Up Icon</string>
     <string name="preferences">Preferences</string>
-    <string name="welcome_back">Welcome back</string>
+    <string name="welcome_back">Welcome back.</string>
     <string name="select_your_preferences">Select your\n\npreferences</string>
     <string name="t_continue">Continue</string>
     <string name="already_have_an_account_log_in">Already have an account? Log In</string>
@@ -58,5 +58,67 @@
     <string name="check_your_inbox">Check your inbox for an email from Kaferest and follow the instructions to reset your password.</string>
     <string name="we_ve_sent_a_password_reset_email">We\'ve sent a password reset email.</string>
     <string name="incorrect_email_or_password">Incorrect email or password.</string>
+    <string name="this_email_is_already_registered">This email is already registered</string>
+    <string name="sign_out">Sign Out</string>
 
+    <!-- Bottom Navigation Labels -->
+    <string name="nav_home">Home</string>
+    <string name="nav_shops">Shops</string>
+    <string name="nav_games">Games</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- QR Screen -->
+    <string name="qr_screen_title">Your Personal QR Code</string>
+    <string name="qr_screen_subtitle">Show to shop owners to earn points!</string>
+    <string name="qr_screen_instructions">Present this QR code to cafe owners when making a purchase to collect points and rewards</string>
+    <string name="qr_code_content_description">QR Code</string>
+    <string name="qr_user_id">User ID: %1$s</string>
+    <string name="share_qr_code">Share QR Code</string>
+    <string name="share_button_description">Share</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_profile_title">Profile</string>
+    <string name="settings_appearance_title">Appearance</string>
+    <string name="settings_dark_theme">Dark Theme</string>
+    <string name="settings_notifications_title">Notifications</string>
+    <string name="settings_push_notifications">Push Notifications</string>
+    <string name="settings_about_title">About</string>
+    <string name="settings_privacy_policy">Privacy Policy</string>
+    <string name="settings_terms_of_service">Terms of Service</string>
+    <string name="settings_app_version">App Version</string>
+    <string name="settings_sign_out">Sign Out</string>
+    <string name="settings_sign_out_confirmation">Are you sure you want to sign out?</string>
+    <string name="settings_cancel">Cancel</string>
+
+    <!-- Content Descriptions -->
+    <string name="cd_profile">Profile</string>
+    <string name="cd_theme">Theme</string>
+    <string name="cd_notifications">Notifications</string>
+    <string name="cd_privacy">Privacy</string>
+    <string name="cd_terms">Terms</string>
+    <string name="cd_version">Version</string>
+    <string name="cd_sign_out">Sign Out</string>
+    <string name="cd_close_dialog">Close Dialog</string>
+    <string name="selected_language">English</string>
+
+    <!-- Games Screen -->
+    <string name="games_title">Games</string>
+    <string name="spin_win_title">Spin &amp; Win</string>
+    <string name="spin_win_description">Spin the wheel and win coins! Play once a week.</string>
+    <string name="scratch_win_title">Scratch &amp; Win</string>
+    <string name="scratch_win_description">Scratch the card and reveal your prize! Play once a week.</string>
+    <string name="next_game_available">Next game available in: %1$s</string>
+    <string name="coins_content_description">Your coins</string>
+
+    <!-- Categories -->
+
+    <string name="cappuccino">Cappuccino</string>
+    <string name="espresso">Espresso</string>
+    <string name="latte">Latte</string>
+    <string name="macchiato">Macchiato</string>
+    <string name="mocha">Mocha</string>
+    <string name="waffles">Waffles</string>
+    <string name="pancakes">Pancakes</string>
+    <string name="croissant">Croissant</string>
+    <string name="simit">Simit</string>
 </resources>

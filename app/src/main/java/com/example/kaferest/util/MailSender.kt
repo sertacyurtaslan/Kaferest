@@ -1,12 +1,11 @@
 package com.example.kaferest.util
 
 import android.util.Log
-import com.example.kaferest.data.credentials.Credentials.FROM_EMAIL
-import com.example.kaferest.data.credentials.Credentials.FROM_NAME
+import com.example.kaferest.data.credentials.Credentials.APP_NAME
+import com.example.kaferest.data.credentials.Credentials.SMTP_EMAIL
 import com.example.kaferest.data.credentials.Credentials.SMTP_HOST
 import com.example.kaferest.data.credentials.Credentials.SMTP_PASSWORD
 import com.example.kaferest.data.credentials.Credentials.SMTP_PORT
-import com.example.kaferest.data.credentials.Credentials.SMTP_USERNAME
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.Properties
@@ -39,12 +38,12 @@ object MailSender {
 
             val session = Session.getInstance(props, object : Authenticator() {
                 override fun getPasswordAuthentication(): PasswordAuthentication {
-                    return PasswordAuthentication(SMTP_USERNAME, SMTP_PASSWORD)
+                    return PasswordAuthentication(SMTP_EMAIL, SMTP_PASSWORD)
                 }
             })
 
             val message = MimeMessage(session).apply {
-                setFrom(InternetAddress(FROM_EMAIL, FROM_NAME))
+                setFrom(InternetAddress(SMTP_EMAIL, APP_NAME))
                 setRecipient(Message.RecipientType.TO, InternetAddress(toEmail))
                 subject = "Welcome to Kaferest - Verify Your Email"
                 setContent(VerificationMail.getVerificationEmailTemplate(verificationCode), "text/html; charset=utf-8")

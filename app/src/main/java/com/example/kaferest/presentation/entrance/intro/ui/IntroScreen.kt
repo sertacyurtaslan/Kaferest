@@ -65,16 +65,8 @@ fun IntroScreen(
     navController: NavController,
     googleSignInViewModel: GoogleSignInViewModel = hiltViewModel(),
 ) {
-
     val context = LocalContext.current
     val state by googleSignInViewModel.state.collectAsState()
-
-    val googleAuthUiClient by lazy {
-        GoogleAuthUiClient(
-            context = context,
-            oneTapClient = Identity.getSignInClient(context)
-        )
-    }
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartIntentSenderForResult(),
@@ -83,10 +75,7 @@ fun IntroScreen(
                 googleSignInViewModel.viewModelScope.launch {
                     try {
                         println("GoogleSignIn: Processing successful sign-in result")
-                        val signInResult = googleAuthUiClient.signInWithIntent(
-                            intent = result.data ?: return@launch
-                        )
-                        googleSignInViewModel.onSignInResult(signInResult)
+                        googleSignInViewModel.signInWithIntent(result.data ?: return@launch)
                     } catch (e: Exception) {
                         println("GoogleSignIn: Exception during sign in - ${e.message}")
                         e.printStackTrace()
@@ -118,15 +107,11 @@ fun IntroScreen(
 
     var showLanguageMenu by remember { mutableStateOf(false) }
 
-    LaunchedEffect(key1 = state.isNewUser, key2 = state.isSignInSuccessful) {
-        /*
-        if (state.isNewUser) {
-            navController.navigate(Screen.PreferencesScreen.route)
-            googleSignInViewModel.resetState()
-
-        }*/ if (state.isSignInSuccessful) {
-            navController.navigate(Screen.HomeScreen.route)
-            //viewModel.resetState()
+    LaunchedEffect(state.isSignInSuccessful) {
+        if (state.isSignInSuccessful) {
+            navController.navigate(Screen.MainScreen.route) {
+                popUpTo(Screen.IntroScreen.route) { inclusive = true }
+            }
         }
     }
 
@@ -226,7 +211,7 @@ fun IntroScreen(
                                 onClick = {
                                     googleSignInViewModel.viewModelScope.launch {
                                         try {
-                                            val signInIntentSender = googleAuthUiClient.signIn()
+                                            val signInIntentSender = googleSignInViewModel.signIn()
                                             if (signInIntentSender == null) {
                                                 println("GoogleSignIn: Sign-in intent sender is null")
                                                 Toast.makeText(

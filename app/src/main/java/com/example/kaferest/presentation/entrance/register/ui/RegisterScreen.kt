@@ -46,6 +46,7 @@ import com.example.kaferest.presentation.entrance.register.viewmodel.RegisterScr
 import com.example.kaferest.presentation.components.MenuBackButton
 import android.util.Patterns
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.kaferest.util.ValidationUtils
 
 @Composable
@@ -71,10 +72,13 @@ fun RegisterScreen(
 
     LaunchedEffect(state.isMailVerified) {
         if (state.isMailVerified) {
-            RegisterScreenEvent.SendVerificationMail(
-                userName = nameState.toString(),
-                userMail = emailState.toString(),
-                userPassword = passwordState.toString()
+            println(nameState.value+ emailState.value+ passwordState.value)
+            viewModel.onEvent(
+                RegisterScreenEvent.SendVerificationMail(
+                    userName = nameState.value,
+                    userMail = emailState.value,
+                    userPassword = passwordState.value
+                )
             )
             navController.navigate(Screen.EmailVerificationScreen.route)
             viewModel.resetNavigation()
@@ -143,9 +147,9 @@ fun RegisterScreen(
                             )
                             Spacer(modifier = Modifier.height(5.dp))
 
-                            if (state.emailError != null) {
+                            if (state.emailExistError) {
                                 Text(
-                                    text = state.emailError,
+                                    text = stringResource(R.string.this_email_is_already_registered),
                                     color = Color.Red,
                                     modifier = Modifier.padding(start = 16.dp)
                                 )

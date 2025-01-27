@@ -20,7 +20,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.kaferest.R
 import com.example.kaferest.presentation.components.CustomIconTextField
@@ -45,12 +45,11 @@ fun ForgotPasswordScreen(
     viewModel: ForgotPasswordViewModel = hiltViewModel()
 ) {
 
-    val canResend by viewModel.canResend.collectAsState()
     val emailState = remember { mutableStateOf("") }
     var emailError: Boolean by remember { mutableStateOf(false) }
     var showDialog: Boolean by remember { mutableStateOf(false) }
 
-    val state = viewModel.uiState.value
+    val state = viewModel.uiState.collectAsStateWithLifecycle()
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Scaffold { paddingValue ->
@@ -87,7 +86,7 @@ fun ForgotPasswordScreen(
                     ) {
                         Text(
                             text = stringResource(R.string.password_reset),
-                            style = Typography.displaySmall,
+                            style = Typography.headlineLarge,
                             modifier = Modifier.align(Alignment.CenterHorizontally)
                         )
 
@@ -131,7 +130,7 @@ fun ForgotPasswordScreen(
 
                         Text(
                             text = stringResource(R.string.we_ll_send_you_a_password_reset_mail),
-                            style = Typography.titleMedium,
+                            style = Typography.titleSmall,
                             modifier = Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Center
                         )
