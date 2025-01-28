@@ -1,6 +1,5 @@
 package com.example.kaferest.presentation.menu.settings.ui
 
-import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -17,16 +16,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.kaferest.MainActivity
 import com.example.kaferest.R
 import com.example.kaferest.presentation.menu.settings.viewmodel.SettingsViewModel
 import com.example.kaferest.presentation.navigation.Screen
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     navController: NavController,
@@ -46,8 +42,8 @@ fun SettingsScreen(
         }
     }
 
-    Scaffold{ paddingValues ->
-        Column(
+        Scaffold{ paddingValues ->
+            Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)

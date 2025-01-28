@@ -79,31 +79,16 @@ fun IntroScreen(
                     } catch (e: Exception) {
                         println("GoogleSignIn: Exception during sign in - ${e.message}")
                         e.printStackTrace()
-                        Toast.makeText(
-                            context,
-                            "Sign-in error: ${e.message}",
-                            Toast.LENGTH_LONG
-                        ).show()
+
                     }
                 }
             } else {
                 println("GoogleSignIn: Sign-in cancelled or failed - resultCode: ${result.resultCode}")
                 println("GoogleSignIn: Error data: ${result.data?.extras}")
-                Toast.makeText(
-                    context,
-                    "Sign-in cancelled",
-                    Toast.LENGTH_SHORT
-                ).show()
+
             }
         }
     )
-
-    // Add this to observe sign-in errors
-    LaunchedEffect(state.signInError) {
-        state.signInError?.let { error ->
-            Toast.makeText(context, error, Toast.LENGTH_LONG).show()
-        }
-    }
 
     var showLanguageMenu by remember { mutableStateOf(false) }
 
@@ -214,11 +199,6 @@ fun IntroScreen(
                                             val signInIntentSender = googleSignInViewModel.signIn()
                                             if (signInIntentSender == null) {
                                                 println("GoogleSignIn: Sign-in intent sender is null")
-                                                Toast.makeText(
-                                                    context,
-                                                    "Couldn't start sign-in",
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
                                                 return@launch
                                             }
                                             launcher.launch(
@@ -227,11 +207,7 @@ fun IntroScreen(
                                         } catch (e: Exception) {
                                             println("GoogleSignIn: Error launching sign-in - ${e.message}")
                                             e.printStackTrace()
-                                            Toast.makeText(
-                                                context,
-                                                "Error: ${e.message}",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
+
                                         }
                                     }
                                 },

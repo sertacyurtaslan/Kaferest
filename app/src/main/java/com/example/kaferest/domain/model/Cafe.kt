@@ -9,6 +9,7 @@ import kotlinx.parcelize.Parcelize
 data class Cafe (
     val name: String? = null,
     val image: String? = null,
+    val address: String? = null,
     val rating: Double = 0.0,
     val distance: String? = null,
     val isPromoted: Boolean = false

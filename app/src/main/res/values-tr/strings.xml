@@ -60,11 +60,12 @@
     <string name="incorrect_email_or_password">E-posta veya şifre hatalı.</string>
     <string name="this_email_is_already_registered">Bu e-posta zaten kayıtlı.</string>
     <string name="sign_out">Sign Out</string>
+
     <!-- Bottom Navigation Labels -->
-    <string name="nav_home">Home</string>
-    <string name="nav_shops">Shops</string>
-    <string name="nav_games">Games</string>
-    <string name="nav_settings">Settings</string>
+    <string name="nav_home">Ev</string>
+    <string name="nav_shops">Dükkanlar</string>
+    <string name="nav_games">Oyunlar</string>
+    <string name="nav_settings">Ayarlar</string>
     <!-- QR Screen -->
     <string name="qr_screen_title">Kişisel QR Kodunuz</string>
     <string name="qr_screen_subtitle">Puan kazanmak için kafenize gösterin!</string>
@@ -107,6 +108,7 @@
     <string name="coins_content_description">Jetonlarınız</string>
 
     <!-- Categories -->
+    <string name="categories">Kategoriler</string>
 
     <string name="cappuccino">Cappuccino</string>
     <string name="espresso">Espresso</string>
@@ -117,4 +119,9 @@
     <string name="pancakes">Pankek</string>
     <string name="croissant">Kruvasan</string>
     <string name="simit">Simit</string>
+
+    <string name="search_cafes">Kafe ara...</string>
+    <string name="featured_cafes">Öne Çıkan Kafeler</string>
+    <string name="promoted">Önerilen</string>
+
 </resources>

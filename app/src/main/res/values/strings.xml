@@ -111,6 +111,7 @@
     <string name="coins_content_description">Your coins</string>
 
     <!-- Categories -->
+    <string name="categories">Categories</string>
 
     <string name="cappuccino">Cappuccino</string>
     <string name="espresso">Espresso</string>
@@ -121,4 +122,7 @@
     <string name="pancakes">Pancakes</string>
     <string name="croissant">Croissant</string>
     <string name="simit">Simit</string>
+    <string name="search_cafes">Search cafes...</string>
+    <string name="featured_cafes">Featured Cafes</string>
+    <string name="promoted">Promoted</string>
 </resources>

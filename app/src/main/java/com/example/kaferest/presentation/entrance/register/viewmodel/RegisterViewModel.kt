@@ -4,11 +4,13 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.kaferest.domain.manager.UserManager
 import com.example.kaferest.domain.model.User
 import com.example.kaferest.domain.repository.KaferestRepository
 import com.example.kaferest.util.CurrentDate
 import com.example.kaferest.util.MailSender
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.userProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -24,7 +26,8 @@ import kotlin.random.Random
 class RegisterViewModel @Inject constructor(
     private val repository: KaferestRepository,
     private val auth: FirebaseAuth,
-    private val db: FirebaseFirestore
+    private val db: FirebaseFirestore,
+    private val userManager: UserManager
 ) : ViewModel() {
 
     private val _uiState = mutableStateOf(RegisterScreenState())
@@ -49,30 +52,58 @@ class RegisterViewModel @Inject constructor(
 
     private fun registerUser(name: String, email: String, password: String) =
         viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isLoading = true)
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener { authResult ->
-                    val firebaseUserId = authResult.user?.uid
-                    if (firebaseUserId == null) {
-                        println("RegisterViewModel: Firebase User ID is null")
-                        _uiState.value = _uiState.value.copy(errorMessage = "Firebase User ID is null")
+                    val firebaseUser = authResult.user
+                    if (firebaseUser == null) {
+                        println("RegisterViewModel: Firebase User is null")
+                        _uiState.value = _uiState.value.copy(
+                            errorMessage = "Firebase User is null",
+                            isLoading = false
+                        )
                         return@addOnSuccessListener
                     }
 
-                    println("RegisterViewModel: Firebase User ID is $firebaseUserId")
+                    // Update display name
+                    val profileUpdates = userProfileChangeRequest {
+                        displayName = name
+                    }
 
-                    val userId = UUID.randomUUID().toString()
-                    val user = User(
-                        userId,
-                        userName = name,
-                        userEmail = email,
-                        userCreationDate = CurrentDate().getFormattedDate()
-                    )
-                    saveUserToFirestore(user, userId)
-                    _uiState.value = _uiState.value.copy(isRegistered = true)
+                    firebaseUser.updateProfile(profileUpdates)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                println("RegisterViewModel: Display name updated successfully")
+                                // Create user object and save to Firestore
+                                val user = User(
+                                    userId = firebaseUser.uid,
+                                    userName = name,
+                                    userEmail = email,
+                                    userCreationDate = CurrentDate().getFormattedDate()
+                                )
+                                viewModelScope.launch {
+                                    saveUserToFirestore(user, firebaseUser.uid)
+                                    userManager.saveUser(user)
+                                }
+                                _uiState.value = _uiState.value.copy(
+                                    isRegistered = true,
+                                    isLoading = false
+                                )
+                            } else {
+                                println("RegisterViewModel: Failed to update display name - ${task.exception?.message}")
+                                _uiState.value = _uiState.value.copy(
+                                    errorMessage = "Failed to update display name",
+                                    isLoading = false
+                                )
+                            }
+                        }
                 }
                 .addOnFailureListener { exception ->
                     println("RegisterViewModel: Failed to create user - ${exception.localizedMessage}")
-                    _uiState.value = _uiState.value.copy(emailError = exception.localizedMessage)
+                    _uiState.value = _uiState.value.copy(
+                        emailError = exception.localizedMessage,
+                        isLoading = false
+                    )
                 }
         }
 

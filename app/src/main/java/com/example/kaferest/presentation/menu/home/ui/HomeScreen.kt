@@ -29,6 +29,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -37,11 +38,6 @@ import com.example.kaferest.R
 import com.example.kaferest.domain.model.Cafe
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
-data class Category(
-    val icon: Painter,
-    val name: String
-)
 
 @Composable
 fun HomeScreen(
@@ -73,10 +69,10 @@ fun HomeScreen(
 
     // Sample cafes
     val cafes = listOf(
-        Cafe("Cafe Mocha", "https://picsum.photos/200/200", 4.5, "1.2 km", true),
-        Cafe("Star Coffee", "https://picsum.photos/200/201", 4.2, "0.8 km"),
-        Cafe("Bean Scene", "https://picsum.photos/200/202", 4.8, "2.1 km", true),
-        Cafe("Coffee House", "https://picsum.photos/200/203", 4.0, "1.5 km")
+        Cafe("Cafe Mocha", "https://picsum.photos/200/200","", 4.5, "1.2 km", true),
+        Cafe("Star Coffee", "https://picsum.photos/200/201","" ,4.2, "0.8 km"),
+        Cafe("Bean Scene", "https://picsum.photos/200/202", "",4.8, "2.1 km", true),
+        Cafe("Coffee House", "https://picsum.photos/200/203","", 4.0, "1.5 km")
     )
 
     val pagerState = rememberPagerState(pageCount = { carouselItems.size })
@@ -156,7 +152,7 @@ fun HomeScreen(
 
         // Categories
         Text(
-            "Categories",
+            stringResource(R.string.categories),
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(horizontal = 16.dp)
         )
@@ -174,7 +170,7 @@ fun HomeScreen(
 
         // Featured Cafes
         Text(
-            "Featured Cafes",
+            stringResource(R.string.featured_cafes),
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(horizontal = 16.dp)
         )
@@ -193,123 +189,7 @@ fun HomeScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SearchBar(modifier: Modifier = Modifier) {
-    OutlinedTextField(
-        value = "",
-        onValueChange = {},
-        modifier = modifier,
-        placeholder = { Text("Search cafes...") },
-        leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search") },
-        shape = RoundedCornerShape(12.dp),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
-        )
-    )
-}
 
-@Composable
-fun CategoryItem(category: Category) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.clickable { }
-    ) {
-        Box(
-            modifier = Modifier
-                .size(64.dp)
-                .clip(RoundedCornerShape(16.dp))
-                .background(MaterialTheme.colorScheme.primaryContainer),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                category.icon,
-                contentDescription = category.name,
-                tint = MaterialTheme.colorScheme.onPrimaryContainer
-            )
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = category.name,
-            style = MaterialTheme.typography.bodyMedium
-        )
-    }
-}
 
-@Composable
-fun CafeCard(cafe: Cafe) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { },
-        shape = RoundedCornerShape(16.dp),
-    ) {
-        Column {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp)
-            ) {
-                AsyncImage(
-                    model = cafe.image,
-                    contentDescription = cafe.name,
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
-                )
-                if (cafe.isPromoted) {
-                    Surface(
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .align(Alignment.TopEnd),
-                        shape = RoundedCornerShape(8.dp)
-                    ) {
-                        Text(
-                            "Promoted",
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                            color = MaterialTheme.colorScheme.onPrimary,
-                            style = MaterialTheme.typography.labelSmall
-                        )
-                    }
-                }
-            }
-            Column(
-                modifier = Modifier.padding(12.dp)
-            ) {
-                cafe.name?.let {
-                    Text(
-                        it,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            Icons.Default.Star,
-                            contentDescription = "Rating",
-                            modifier = Modifier.size(16.dp),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            "${cafe.rating}",
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                    }
-                    cafe.distance?.let {
-                        Text(
-                            it,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
+
+

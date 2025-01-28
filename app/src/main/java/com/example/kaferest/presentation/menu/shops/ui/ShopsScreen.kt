@@ -30,7 +30,8 @@ data class Shop(
     val totalRatings: Int,
     val description: String,
     val categories: List<String>,
-    val priceRange: String
+    val priceRange: String,
+    val address: String
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,7 +53,8 @@ fun ShopsScreen(
                 totalRatings = 128,
                 description = "Cozy coffee shop with great ambiance",
                 categories = listOf("Coffee", "Breakfast", "Desserts"),
-                priceRange = "$$"
+                priceRange = "$$",
+                address = "789 Bağdat Caddesi, Kadıköy, Istanbul"
             ),
             Shop(
                 id = "2",
@@ -62,7 +64,8 @@ fun ShopsScreen(
                 totalRatings = 85,
                 description = "Artisanal coffee and fresh pastries",
                 categories = listOf("Coffee", "Pastries", "Sandwiches"),
-                priceRange = "$"
+                priceRange = "$",
+                address = "123 İstiklal Caddesi, Beyoğlu, Istanbul"
             ),
             Shop(
                 id = "3",
@@ -72,7 +75,8 @@ fun ShopsScreen(
                 totalRatings = 256,
                 description = "Premium coffee and light meals",
                 categories = listOf("Coffee", "Lunch", "Smoothies"),
-                priceRange = "$$$"
+                priceRange = "$$$",
+                address = "456 Nişantaşı Mahallesi, Şişli, Istanbul"
             ),
             Shop(
                 id = "4",
@@ -82,7 +86,8 @@ fun ShopsScreen(
                 totalRatings = 164,
                 description = "Specialty coffee and brunch spot",
                 categories = listOf("Coffee", "Brunch", "Tea"),
-                priceRange = "$$"
+                priceRange = "$$",
+                address = "321 Cihangir Sokak, Beyoğlu, Istanbul"
             )
         )
     }

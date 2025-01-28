@@ -39,23 +39,21 @@ import com.example.kaferest.presentation.components.ButtonContent
 import com.example.kaferest.presentation.components.CustomButton
 import com.example.kaferest.presentation.components.CustomIconTextField
 import com.example.kaferest.presentation.components.MenuBackButton
-import com.example.kaferest.presentation.entrance.login.viewmodel.LoginViewModel
 import com.example.kaferest.presentation.navigation.Screen
 import com.example.kaferest.ui.theme.Typography
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.text.style.TextAlign
-import com.example.kaferest.presentation.entrance.login.viewmodel.LoginScreenEvent
-import com.example.kaferest.presentation.entrance.register.viewmodel.RegisterScreenEvent
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import android.util.Patterns
+import com.example.kaferest.presentation.entrance.login.viewmodel.LoginScreenEvent
+import com.example.kaferest.presentation.entrance.login.viewmodel.LoginViewModel
 import com.example.kaferest.util.ValidationUtils
 
 @Composable
 fun LoginScreen(
     navController: NavController,
-    viewModel: LoginViewModel = hiltViewModel()
+    viewModel: LoginViewModel= hiltViewModel()
 ) {
     val state = viewModel.uiState.value
 
