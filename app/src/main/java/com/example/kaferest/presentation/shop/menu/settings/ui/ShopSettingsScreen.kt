@@ -1,5 +1,6 @@
-package com.example.kaferest.presentation.menu.settings.ui
+package com.example.kaferest.presentation.shop.menu.settings.ui
 
+import com.example.kaferest.presentation.menu.settings.ui.LanguageSelectionDialog
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -19,14 +20,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.kaferest.R
-import com.example.kaferest.presentation.menu.settings.viewmodel.SettingsViewModel
+import com.example.kaferest.presentation.shop.menu.settings.viewmodel.ShopSettingsViewModel
 import com.example.kaferest.presentation.navigation.Screen
 import kotlinx.coroutines.launch
 
 @Composable
-fun SettingsScreen(
+fun AdminSettingsScreen(
     navController: NavController,
-    viewModel: SettingsViewModel = hiltViewModel(),
+    viewModel: ShopSettingsViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -388,7 +389,7 @@ fun SettingsScreen(
                             Button(
                                 onClick = {
                                     scope.launch {
-                                        viewModel.signOut()
+                                        viewModel.signOutAdmin()
                                     }
                                     showSignOutDialog = false
                                 }

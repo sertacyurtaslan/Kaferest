@@ -13,6 +13,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.kaferest.presentation.shop.menu.main.AdminMainScreen
+import com.example.kaferest.presentation.shop.menu.home.ui.ShopCreationScreen
 import com.example.kaferest.presentation.entrance.forgot_password.ui.ForgotPasswordScreen
 import com.example.kaferest.presentation.entrance.admin_login.ui.AdminLoginScreen
 import com.example.kaferest.presentation.entrance.intro.ui.IntroScreen
@@ -22,7 +24,7 @@ import com.example.kaferest.presentation.entrance.register.ui.EmailVerificationS
 import com.example.kaferest.presentation.entrance.register.viewmodel.RegisterViewModel
 import com.example.kaferest.presentation.menu.home.ui.HomeScreen
 import com.example.kaferest.presentation.menu.shops.ui.ShopsScreen
-import com.example.kaferest.presentation.menu.main.ui.MainScreen
+import com.example.kaferest.presentation.menu.main.MainScreen
 import com.example.kaferest.presentation.menu.shops.ui.ShopDetailScreen
 import com.example.kaferest.presentation.splash.SplashScreen
 
@@ -50,7 +52,7 @@ fun ScreenNavigation() {
 
         // Main Screen with Bottom Navigation
         addComposable(Screen.MainScreen.route, navController) { 
-            MainScreen(navController) 
+            MainScreen(navController)
         }
 
         composable(route = Screen.Home.route) {
@@ -75,6 +77,14 @@ fun ScreenNavigation() {
                 navController = navController
             )
         }
+
+        //Admin
+        addComposable(Screen.AdminMainScreen.route, navController) {
+            AdminMainScreen(navController) }
+
+        //Admin
+        addComposable(Screen.ShopCreationScreen.route, navController) {
+            ShopCreationScreen(navController) }
 
     }
 }

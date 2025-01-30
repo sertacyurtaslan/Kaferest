@@ -34,19 +34,35 @@ fun SplashScreen(
         animationSpec = tween(durationMillis = 1000)
     )
 
-    val isUserSignedIn by viewModel.isUserSignedIn.collectAsState()
-    val isInitialized by viewModel.isInitialized.collectAsState()
+    val state by viewModel.state.collectAsState()
 
     LaunchedEffect(true) {
         startAnimation = true
     }
 
     // Only navigate when initialization is complete
-    LaunchedEffect(isInitialized, isUserSignedIn) {
-        if (isInitialized) {
-            when (isUserSignedIn) {
+    LaunchedEffect(state.isUserInitialized, state.isAdminInitialized, state.isUserSignedIn, state.isAdminSignedIn) {
+        println("user:${state.isUserSignedIn}")
+        println("admin:${state.isAdminSignedIn}")
+
+        if (state.isUserInitialized) {
+            when (state.isUserSignedIn) {
                 true -> {
                     navController.navigate(Screen.MainScreen.route) {
+                        popUpTo(Screen.SplashScreen.route) { inclusive = true }
+                    }
+                }
+                false -> {
+                    navController.navigate(Screen.IntroScreen.route) {
+                        popUpTo(Screen.SplashScreen.route) { inclusive = true }
+                    }
+                }
+            }
+        }
+        if (state.isAdminInitialized) {
+            when (state.isAdminSignedIn) {
+                true -> {
+                    navController.navigate(Screen.AdminMainScreen.route) {
                         popUpTo(Screen.SplashScreen.route) { inclusive = true }
                     }
                 }
@@ -60,7 +76,7 @@ fun SplashScreen(
     }
 
     // Show blank screen until initialization is complete
-    if (!isInitialized) {
+    if (!(state.isAdminInitialized || state.isUserInitialized)) {
         Box(
             modifier = Modifier
                 .fillMaxSize()

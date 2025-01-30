@@ -103,6 +103,8 @@ dependencies {
     implementation(libs.roomruntime)
     ksp(libs.kspRoomCompiler)
     annotationProcessor(libs.kspRoomCompiler)
+    implementation(libs.firebase.storage.ktx)
+
 
     // Hilt dependencies
     implementation(libs.hilt)
@@ -164,5 +166,16 @@ dependencies {
     // QR Code Generation
     implementation(libs.core)
     implementation(libs.zxing.android.embedded)
+
+    // Google Maps
+    implementation(libs.maps.compose)
+    implementation(libs.play.services.maps)
+    implementation(libs.play.services.location)
+
+    // Activity Result API
+    implementation(libs.androidx.activity.compose.v172)
+
+    implementation(libs.reorderable)
+
 
 }

@@ -6,6 +6,8 @@ import com.example.kaferest.domain.manager.UserManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -13,21 +15,35 @@ import javax.inject.Inject
 class SplashViewModel @Inject constructor(
     private val userManager: UserManager
 ) : ViewModel() {
-    private val _isUserSignedIn = MutableStateFlow(false)
-    val isUserSignedIn: StateFlow<Boolean> = _isUserSignedIn
-
-    private val _isInitialized = MutableStateFlow(false)
-    val isInitialized: StateFlow<Boolean> = _isInitialized
+    private val _state = MutableStateFlow(SplashScreenState())
+    val state: StateFlow<SplashScreenState> = _state.asStateFlow()
 
     init {
-        checkUserSignInStatus()
+        checkSignInStatus()
     }
 
-    private fun checkUserSignInStatus() {
+    private fun checkSignInStatus() {
         viewModelScope.launch {
+            // Check user status
             userManager.user.collect { user ->
-                _isUserSignedIn.value = user != null
-                _isInitialized.value = true // Mark as initialized after we know the user state
+                _state.update { currentState ->
+                    currentState.copy(
+                        isUserSignedIn = user != null,
+                        isUserInitialized = true
+                    )
+                }
+            }
+        }
+
+        viewModelScope.launch {
+            // Check admin status
+            userManager.admin.collect { admin ->
+                _state.update { currentState ->
+                    currentState.copy(
+                        isAdminSignedIn = admin != null,
+                        isAdminInitialized = true
+                    )
+                }
             }
         }
     }

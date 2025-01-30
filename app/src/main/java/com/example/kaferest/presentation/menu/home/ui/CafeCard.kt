@@ -29,7 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.kaferest.R
-import com.example.kaferest.domain.model.Cafe
+import com.example.kaferest.domain.model.Shop
 
 @Composable
 fun CafeCard(cafe: Cafe) {

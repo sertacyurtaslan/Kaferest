@@ -64,6 +64,7 @@
     <!-- Bottom Navigation Labels -->
     <string name="nav_home">Ev</string>
     <string name="nav_shops">Dükkanlar</string>
+    <string name="nav_shop">Dükkanım</string>
     <string name="nav_games">Oyunlar</string>
     <string name="nav_settings">Ayarlar</string>
     <!-- QR Screen -->
@@ -123,5 +124,27 @@
     <string name="search_cafes">Kafe ara...</string>
     <string name="featured_cafes">Öne Çıkan Kafeler</string>
     <string name="promoted">Önerilen</string>
+
+    <!-- Shop Creation -->
+    <string name="create_shop">Dükkan Oluştur</string>
+    <string name="shop_name">Dükkan Adı</string>
+    <string name="address">Adres</string>
+    <string name="detect_location">Mevcut Konumu Algıla</string>
+    <string name="upload_shop_photos">Dükkan Fotoğrafları Yükle (3 adet gerekli)</string>
+    <string name="add_photos">Fotoğraf Ekle</string>
+    <string name="remove_photo">Fotoğrafı kaldır</string>
+    <string name="drag_to_reorder">Sıralamak için sürükle</string>
+    <string name="drag_to_reorder_hint">Fotoğrafları yeniden sıralamak için uzun basın ve sürükleyin</string>
+    <string name="add_photo">Fotoğraf ekle</string>
+    <string name="category_name">Kategori Adı</string>
+    <string name="add_category">Kategori Ekle</string>
+    <string name="product_name">Ürün Adı</string>
+    <string name="price">Fiyat</string>
+    <string name="category">Kategori</string>
+    <string name="add_product">Ürün Ekle</string>
+    <string name="add">Ekle</string>
+    <string name="next">İleri</string>
+    <string name="finish">Bitir</string>
+    <string name="cancel">İptal</string>
 
 </resources>

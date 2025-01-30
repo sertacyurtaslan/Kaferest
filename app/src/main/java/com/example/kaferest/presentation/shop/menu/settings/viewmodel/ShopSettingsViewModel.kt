@@ -1,9 +1,9 @@
-package com.example.kaferest.presentation.menu.settings.viewmodel
+package com.example.kaferest.presentation.shop.menu.settings.viewmodel
 
+import com.example.kaferest.presentation.menu.settings.viewmodel.SettingsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kaferest.data.preferences.ThemePreferences
-import com.example.kaferest.data.prefs.PreferenceManager
 import com.example.kaferest.domain.manager.UserManager
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SettingsViewModel @Inject constructor(
+class ShopSettingsViewModel @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val userManager: UserManager,
     private val themePreferences: ThemePreferences,
@@ -31,16 +31,18 @@ class SettingsViewModel @Inject constructor(
     private fun loadUserData() {
         viewModelScope.launch {
             try {
-                val currentUser = firebaseAuth.currentUser
-                currentUser?.let { user ->
-                    _settingsState.value = _settingsState.value.copy(
-                        userName = user.displayName ?: "",
-                        userEmail = user.email ?: ""
-                    )
+                // Collect admin data from UserManager
+                userManager.admin.collect { admin ->
+                    admin?.let {
+                        _settingsState.value = _settingsState.value.copy(
+                            userName = it.userName ?: "",
+                            userEmail = it.userEmail ?: ""
+                        )
+                    }
                 }
             } catch (e: Exception) {
                 _settingsState.value = _settingsState.value.copy(
-                    error = e.message ?: "Error loading user data"
+                    error = e.message ?: "Error loading admin data"
                 )
             }
         }
@@ -89,19 +91,4 @@ class SettingsViewModel @Inject constructor(
             }
         }
     }
-    fun signOut() {
-        viewModelScope.launch {
-            try {
-                userManager.clearUser()
-                firebaseAuth.signOut()
-                _settingsState.value = _settingsState.value.copy(
-                    isSignedOut = true
-                )
-            } catch (e: Exception) {
-                _settingsState.value = _settingsState.value.copy(
-                    error = e.message ?: "Error signing out"
-                )
-            }
-        }
-    }
-} 
+}

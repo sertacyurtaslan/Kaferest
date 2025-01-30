@@ -7,16 +7,14 @@ sealed class Screen(val route: String){
     data object RegisterScreen: Screen(route = "register_screen")
     data object ForgotPasswordScreen: Screen(route = "forgot_password_screen")
     data object AdminLoginScreen: Screen(route = "admin_login_screen")
-    data object HomeScreen: Screen(route = "home_screen")
-    data object SettingsScreen: Screen(route = "settings_screen")
-    data object MainScreenWithNavBar: Screen(route = "main_screen_with_navbar")
     data object EmailVerificationScreen: Screen(route = "email_verification")
     data object ShopsScreen : Screen("shops_screen")
-    data object QRScreen : Screen("qr_screen")
-    data object GamesScreen : Screen("games_screen")
     data object MainScreen : Screen("main_screen")
     data object Home : Screen("home")
     data object ShopDetail : Screen("shop/{shopId}") {
         fun createRoute(shopId: String) = "shop/$shopId"
     }
+    data object AdminMainScreen: Screen(route = "admin_main_screen")
+    data object ShopCreationScreen: Screen(route = "shop_creation_screen")
+
 }

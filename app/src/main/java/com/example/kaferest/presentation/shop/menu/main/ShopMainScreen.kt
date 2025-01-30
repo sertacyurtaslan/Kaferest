@@ -1,4 +1,4 @@
-package com.example.kaferest.presentation.menu.main.ui
+package com.example.kaferest.presentation.shop.menu.main
 
 import android.util.Log
 import androidx.compose.foundation.layout.Box
@@ -22,17 +22,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.kaferest.R
-import com.example.kaferest.presentation.menu.games.ui.GamesScreen
-import com.example.kaferest.presentation.menu.home.ui.HomeScreen
-import com.example.kaferest.presentation.menu.qr.ui.QrScreen
-import com.example.kaferest.presentation.menu.settings.ui.SettingsScreen
-import com.example.kaferest.presentation.menu.shops.ui.ShopsScreen
+import com.example.kaferest.presentation.shop.menu.settings.ui.AdminSettingsScreen
 import com.google.firebase.auth.FirebaseAuth
 
-private const val TAG = "MainScreen"
+private const val TAG = "AdminMainScreen"
 
 @Composable
-fun MainScreen(
+fun AdminMainScreen(
     rootNavController: NavHostController
 ) {
     val navController = rememberNavController()
@@ -92,22 +88,16 @@ fun MainScreen(
         Box(modifier = Modifier.padding(paddingValues)) {
             NavHost(
                 navController = navController,
-                startDestination = "home"
+                startDestination = "shop"
             ) {
-                composable("home") { 
-                    HomeScreen(rootNavController) 
+                composable("shop") {
+                    //ShopScreen(rootNavController)
                 }
-                composable("shops") { 
-                    ShopsScreen(rootNavController) 
+                composable("scan") {
+                    //ScanScreen(rootNavController)
                 }
-                composable("qr") {
-                    QrScreen(rootNavController)
-                }
-                composable("games") { 
-                    GamesScreen(rootNavController) 
-                }
-                composable("settings") { 
-                    SettingsScreen(rootNavController) 
+                composable("settings") {
+                    AdminSettingsScreen(rootNavController)
                 }
             }
         }

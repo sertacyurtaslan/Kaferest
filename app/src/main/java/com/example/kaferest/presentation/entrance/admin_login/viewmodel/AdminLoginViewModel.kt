@@ -4,8 +4,9 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kaferest.presentation.entrance.admin_login.viewmodel.AdminLoginEvent
-import com.example.kaferest.presentation.entrance.admin_login.viewmodel.AdminLoginState
+import com.example.kaferest.domain.manager.UserManager
+import com.example.kaferest.domain.model.User
+import com.example.kaferest.util.CurrentDate
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AdminLoginViewModel @Inject constructor(
     private val auth: FirebaseAuth,
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+    private val userManager: UserManager
 ) : ViewModel() {
 
     private val _uiState = mutableStateOf(AdminLoginState())
@@ -27,22 +29,37 @@ class AdminLoginViewModel @Inject constructor(
             _uiState.value = _uiState.value.copy(isLoading = true)
             
             // Query Firestore to check owner credentials
-            val ownersRef = firestore.collection("owners")
+            val ownersRef = firestore.collection("shops")
             val querySnapshot = ownersRef.get().await()
             
             var isValidOwner = false
+            var shopDocument: Map<String, Any>? = null
+
             for (document in querySnapshot.documents) {
-                val ownerMail = document.getString("ownerMail")
-                val ownerPassword = document.getString("ownerPassword")
-                
-                if (ownerMail == email && ownerPassword == password) {
+                val shopId = document.id
+                val shopName = document.getString("shopName")
+                val shopMail = document.getString("shopMail")
+                val shopPassword = document.getString("shopPassword")
+
+                if (shopMail == email && shopPassword == password) {
+                    // Create admin user data
+                    val adminData = User(
+                        userId = shopId,
+                        userName = shopName ?: "",
+                        userEmail = shopMail ?: "",
+                        userCreationDate = CurrentDate().getFormattedDate(),
+                    )
+
+                    // Save admin data using UserManager
+                    userManager.saveAdmin(adminData)
+                    println("admin data saved")
                     isValidOwner = true
-                    println("dedengil geldi mi ")
+                    shopDocument = document.data
                     break
                 }
             }
-            
-            if (isValidOwner) {
+
+            if (isValidOwner && shopDocument != null) {
                 _uiState.value = _uiState.value.copy(
                     successMessage = "Login successful",
                     isLoading = false

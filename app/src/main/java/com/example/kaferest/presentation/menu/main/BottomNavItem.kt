@@ -1,4 +1,4 @@
-package com.example.kaferest.presentation.menu.main.ui
+package com.example.kaferest.presentation.menu.main
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home

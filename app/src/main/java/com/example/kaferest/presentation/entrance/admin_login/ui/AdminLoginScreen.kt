@@ -72,7 +72,7 @@ fun AdminLoginScreen(
 
     LaunchedEffect(state.successMessage) {
         if (state.successMessage != null) {
-            navController.navigate(Screen.ForgotPasswordScreen.route)
+            navController.navigate(Screen.ShopCreationScreen.route)
         }
     }
 
