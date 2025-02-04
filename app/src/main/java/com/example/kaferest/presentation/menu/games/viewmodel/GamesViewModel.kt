@@ -1,11 +1,8 @@
 package com.example.kaferest.presentation.menu.games.viewmodel
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kaferest.data.prefs.PreferenceManager
-import com.example.kaferest.presentation.menu.qr.viewmodel.QrState
+import com.example.kaferest.data.preferences.PreferenceManager
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job

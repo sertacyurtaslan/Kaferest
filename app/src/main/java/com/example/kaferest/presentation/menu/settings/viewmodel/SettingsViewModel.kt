@@ -3,7 +3,6 @@ package com.example.kaferest.presentation.menu.settings.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kaferest.data.preferences.ThemePreferences
-import com.example.kaferest.data.prefs.PreferenceManager
 import com.example.kaferest.domain.manager.UserManager
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel

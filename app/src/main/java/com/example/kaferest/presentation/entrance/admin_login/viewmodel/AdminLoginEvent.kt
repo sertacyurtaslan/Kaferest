@@ -6,3 +6,4 @@ sealed class AdminLoginEvent {
         val ownerPassword: String = ""
     ): AdminLoginEvent()
 }
+

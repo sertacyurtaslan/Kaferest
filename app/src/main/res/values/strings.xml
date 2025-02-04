@@ -137,7 +137,7 @@
     <string name="remove_photo">Remove photo</string>
     <string name="drag_to_reorder">Drag to reorder</string>
     <string name="drag_to_reorder_hint">Long press and drag to reorder photos</string>
-    <string name="add_photo">Add photo</string>
+    <string name="add_photo">Add Photo</string>
     <string name="category_name">Category Name</string>
     <string name="add_category">Add Category</string>
     <string name="product_name">Product Name</string>
@@ -148,4 +148,62 @@
     <string name="finish">Finish</string>
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
+
+    <!-- Shop Creation Menus -->
+    <string name="enter_shop_name">Enter Shop Name</string>
+    <string name="select_location">Select Location</string>
+    <string name="add_shop_photos">Add Shop Photos</string>
+    <string name="create_categories">Create Categories</string>
+    <string name="create_products">Create Products</string>
+
+    <!-- Predefined Categories -->
+    <string name="category_coffee">Coffee</string>
+    <string name="category_hot_beverages">Hot Beverages</string>
+    <string name="category_cold_beverages">Cold Beverages</string>
+    <string name="category_desserts">Desserts</string>
+    <string name="category_cakes_pastries">Cakes &amp; Pastries</string>
+    <string name="category_cookies_snacks">Cookies &amp; Snacks</string>
+    <string name="category_breakfast">Breakfast</string>
+    <string name="category_toasts_sandwiches">Toasts &amp; Sandwiches</string>
+    <string name="category_salads">Salads</string>
+    <string name="category_main_dishes">Main Dishes</string>
+    <string name="category_burgers">Burgers</string>
+    <string name="category_pasta">Pasta</string>
+    <string name="category_smoothies_detox">Smoothies &amp; Detox Drinks</string>
+    <string name="category_fresh_juices">Fresh Juices &amp; Lemonades</string>
+    <string name="category_milkshakes">Milkshakes &amp; Frappes</string>
+    <string name="category_herbal_teas">Herbal Teas</string>
+    <string name="category_special_blends">Special Blends</string>
+    <string name="category_vegan_gluten_free">Vegan &amp; Gluten-Free Options</string>
+    <string name="category_kids_menu">Kids\' Menu</string>
+    <string name="category_chef_specials">Chef\'s Specials</string>
+    <string name="coffee">Coffee</string>
+
+    <!-- Shop Creation Steps -->
+    <string name="select_categories">Select Categories</string>
+    <string name="add_custom_category">Add Custom Category</string>
+    <string name="add_custom">Add Custom</string>
+    <string name="category_name_label">Category Name</string>
+    <string name="select_emoji">Select Emoji</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_add">Add</string>
+    <string name="add_custom_category_desc">Add custom category</string>
+
+    <!-- Shop Creation Validation -->
+    <string name="error_shop_name_required">Shop name is required</string>
+    <string name="error_address_required">Address is required</string>
+    <string name="error_photos_required">At least 3 photos are required</string>
+    <string name="error_categories_required">At least one category is required</string>
+    <string name="error_products_required">At least one product is required</string>
+    <string name="shop_creation_success">Shop created successfully!</string>
+    <string name="shop_creation_error">Failed to create shop. Please try again.</string>
+
+    <!-- Products Screen -->
+    <string name="remove_product">Remove Product</string>
+    <string name="invalid_price">Please enter a valid price</string>
+    <string name="no_products">No products in this category yet</string>
+
+    <!-- Product Photo -->
+    <string name="change_photo">Change Photo</string>
+    <string name="product_photo">Product Photo</string>
 </resources>

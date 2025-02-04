@@ -3,14 +3,16 @@ package com.example.kaferest.presentation.shop.menu.home.viewmodel
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.kaferest.domain.manager.UserManager
+import com.example.kaferest.domain.model.Product
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import com.example.kaferest.presentation.shop.menu.home.model.Product
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -20,8 +22,9 @@ import java.util.UUID
 class ShopCreationViewModel @Inject constructor(
     private val auth: FirebaseAuth,
     private val firestore: FirebaseFirestore,
-    private val storage: FirebaseStorage
-) : ViewModel() {
+    private val storage: FirebaseStorage,
+    private val userManager: UserManager,
+    ) : ViewModel() {
 
     private val _state = MutableStateFlow(ShopCreationState())
     val state: StateFlow<ShopCreationState> = _state.asStateFlow()
@@ -34,49 +37,28 @@ class ShopCreationViewModel @Inject constructor(
         _state.value = _state.value.copy(shopAddress = address)
     }
 
-    private suspend fun uploadPhoto(photoUri: Uri): String {
-        val fileName = "owners/${auth.currentUser?.uid}/photos/${UUID.randomUUID()}"
+    private fun updatePhotos(photos: List<Uri>) {
+        _state.value = _state.value.copy(photos = photos)
+    }
+
+    private suspend fun uploadPhoto(photoUri: Uri): Uri {
+        val userId = userManager.admin.firstOrNull()?.userId ?: ""
+        val fileName = "shops/${userId}/shopPhotos/${UUID.randomUUID()}"
         val photoRef = storage.reference.child(fileName)
 
         return try {
             photoRef.putFile(photoUri).await()
-            photoRef.downloadUrl.await().toString()
+            photoRef.downloadUrl.await()
         } catch (e: Exception) {
             throw e
         }
     }
 
-    suspend fun uploadPhotos(photos: List<Uri>): List<String> {
+    private suspend fun uploadPhotos(photos: List<Uri>): List<Uri> {
         return photos.map { photoUri ->
             uploadPhoto(photoUri)
         }
     }
-
-    fun onEvent(event: ShopCreationEvent) {
-        when (event) {
-            is ShopCreationEvent.UpdateShopName -> {
-                updateShopName(event.shopName)
-            }
-            is ShopCreationEvent.UpdateShopAdress -> {
-                updateShopAddress(event.shopAddress)
-            }
-            is ShopCreationEvent.UploadPhotos -> {
-
-            }
-        }
-    }
-
-
-
-    fun requestLocation() {
-        // TODO: Implement location permission request and get current location
-    }
-
-
-    fun validatePhotos(): Boolean {
-        return state.value.photos.isNotEmpty()
-    }
-
 
     fun addCategory(category: String) {
         val currentCategories = _state.value.categories.toMutableList()
@@ -118,26 +100,26 @@ class ShopCreationViewModel @Inject constructor(
             }
 
             // Upload photos first
-            val uploadedPhotoUrls = uploadPhotos(_state.value.photos)
+            val uploadedPhotoUris = uploadPhotos(_state.value.photos)
 
             val shop = hashMapOf(
-                "ownerId" to currentUser.uid,
-                "name" to _state.value.shopName,
-                "address" to _state.value.shopAddress,
-                "photos" to uploadedPhotoUrls,
-                "categories" to _state.value.categories,
-                "products" to _state.value.products.map { product ->
+                "shopName" to _state.value.shopName,
+                "shopAddress" to _state.value.shopAddress,
+                "shopPhotos" to uploadedPhotoUris,
+                "shopCategories" to _state.value.categories,
+                "shopProducts" to _state.value.products.map { product ->
                     hashMapOf(
-                        "name" to product.name,
-                        "price" to product.price,
-                        "category" to product.category,
-                        "photoUrl" to product.photoUrl
+                        "productName" to product.name,
+                        "productPrice" to product.price,
+                        "productCategory" to product.category,
+                        "productPhotoUri" to product.photoUri
                     )
                 }
             )
 
             firestore.collection("shops")
-                .add(shop)
+                .document(currentUser.uid)
+                .set(shop)
                 .addOnSuccessListener {
                     _state.value = _state.value.copy(
                         isCreated = true,
@@ -160,6 +142,21 @@ class ShopCreationViewModel @Inject constructor(
 
     fun clearError() {
         _state.value = _state.value.copy(error = "")
+    }
+
+    fun onEvent(event: ShopCreationEvent) {
+        when (event) {
+            is ShopCreationEvent.UpdateShopName -> {
+                updateShopName(event.shopName)
+            }
+            is ShopCreationEvent.UpdateShopAdress -> {
+                updateShopAddress(event.shopAddress)
+            }
+            is ShopCreationEvent.UpdateShopPhotos -> {
+                updatePhotos(event.shopPhotos)
+            }
+
+        }
     }
 }
 

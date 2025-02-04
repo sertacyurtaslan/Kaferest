@@ -41,11 +41,6 @@ import com.example.kaferest.presentation.components.CustomButton
 import com.example.kaferest.presentation.components.CustomIconTextField
 import com.example.kaferest.presentation.components.MenuBackButton
 import com.example.kaferest.presentation.entrance.admin_login.viewmodel.AdminLoginEvent
-/*
-import com.example.cafely.ui.theme.Coffee
-import com.example.cafely.ui.theme.CoffeeBlack
-import com.example.cafely.ui.theme.CoffeeGradient
- */
 import com.example.kaferest.ui.theme.Typography
 import com.example.kaferest.presentation.entrance.admin_login.viewmodel.AdminLoginViewModel
 import com.example.kaferest.presentation.navigation.Screen

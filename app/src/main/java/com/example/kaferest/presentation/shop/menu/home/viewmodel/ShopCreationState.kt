@@ -2,7 +2,7 @@ package com.example.kaferest.presentation.shop.menu.home.viewmodel
 
 import android.net.Uri
 import androidx.compose.runtime.Immutable
-import com.example.kaferest.presentation.shop.menu.home.model.Product
+import com.example.kaferest.domain.model.Product
 
 @Immutable
 data class ShopCreationState(

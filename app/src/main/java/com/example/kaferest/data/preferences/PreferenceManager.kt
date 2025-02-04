@@ -1,4 +1,4 @@
-package com.example.kaferest.data.prefs
+package com.example.kaferest.data.preferences
 
 import android.content.Context
 import android.content.SharedPreferences

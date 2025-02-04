@@ -101,10 +101,14 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.roomktx)
     implementation(libs.roomruntime)
+    implementation(libs.firebase.appcheck.debug)
     ksp(libs.kspRoomCompiler)
     annotationProcessor(libs.kspRoomCompiler)
     implementation(libs.firebase.storage.ktx)
 
+    // Firebase App Check
+    implementation(libs.firebase.appcheck.playintegrity)
+    implementation(libs.firebase.appcheck.ktx)
 
     // Hilt dependencies
     implementation(libs.hilt)
@@ -177,5 +181,6 @@ dependencies {
 
     implementation(libs.reorderable)
 
-
+    // Reorderable composable
+    implementation("org.burnoutcrew.composereorderable:reorderable:0.9.6")
 }

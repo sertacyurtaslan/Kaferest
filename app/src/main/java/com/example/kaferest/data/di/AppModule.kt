@@ -3,7 +3,7 @@ package com.example.kaferest.data.di
 import android.app.Application
 import android.content.Context
 import com.example.kaferest.data.firebase.KaferestRepositoryImpl
-import com.example.kaferest.data.prefs.PreferenceManager
+import com.example.kaferest.data.preferences.PreferenceManager
 import com.example.kaferest.domain.manager.UserManager
 import com.example.kaferest.domain.repository.KaferestRepository
 import com.example.kaferest.presentation.entrance.intro.viewmodel.GoogleAuthUiClient

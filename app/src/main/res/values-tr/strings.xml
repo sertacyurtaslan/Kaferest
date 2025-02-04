@@ -56,7 +56,7 @@
     <string name="resend_code">Kodu Yeniden Gönder</string>
     <string name="resend_code_in_seconds">Kodu %d saniye içinde yeniden gönder</string>
     <string name="check_your_inbox">Kaferest\'ten gelen e-postayı gelen kutunuzda kontrol edin ve şifrenizi sıfırlamak için talimatları izleyin.</string>
-    <string name="we_ve_sent_a_password_reset_email">Size bir şifre yenileme maili gönderdik.</string>
+    <string name="we_ve_sent_a_password_reset_email">Size bir şifre y enileme maili gönderdik.</string>
     <string name="incorrect_email_or_password">E-posta veya şifre hatalı.</string>
     <string name="this_email_is_already_registered">Bu e-posta zaten kayıtlı.</string>
     <string name="sign_out">Sign Out</string>
@@ -135,7 +135,9 @@
     <string name="remove_photo">Fotoğrafı kaldır</string>
     <string name="drag_to_reorder">Sıralamak için sürükle</string>
     <string name="drag_to_reorder_hint">Fotoğrafları yeniden sıralamak için uzun basın ve sürükleyin</string>
-    <string name="add_photo">Fotoğraf ekle</string>
+    <string name="add_photo">Fotoğraf Ekle</string>
+    <string name="change_photo">Fotoğrafı Değiştir</string>
+    <string name="product_photo">Ürün Fotoğrafı</string>
     <string name="category_name">Kategori Adı</string>
     <string name="add_category">Kategori Ekle</string>
     <string name="product_name">Ürün Adı</string>
@@ -146,5 +148,59 @@
     <string name="next">İleri</string>
     <string name="finish">Bitir</string>
     <string name="cancel">İptal</string>
+
+    <!-- Shop Creation Menus -->
+    <string name="enter_shop_name">Dükkan Adını Girin</string>
+    <string name="select_location">Konumu Seçin</string>
+    <string name="add_shop_photos">Dükkan Fotoğrafları Ekleyin</string>
+    <string name="create_categories">Kategoriler Oluşturun</string>
+    <string name="create_products">Ürünler Oluşturun</string>
+
+    <!-- Predefined Categories -->
+    <string name="category_coffee">Kahve</string>
+    <string name="category_hot_beverages">Sıcak İçecekler</string>
+    <string name="category_cold_beverages">Soğuk İçecekler</string>
+    <string name="category_desserts">Tatlılar</string>
+    <string name="category_cakes_pastries">Pasta &amp; Börekler</string>
+    <string name="category_cookies_snacks">Kurabiye &amp; Atıştırmalıklar</string>
+    <string name="category_breakfast">Kahvaltı</string>
+    <string name="category_toasts_sandwiches">Tost &amp; Sandviçler</string>
+    <string name="category_salads">Salatalar</string>
+    <string name="category_main_dishes">Ana Yemekler</string>
+    <string name="category_burgers">Burgerler</string>
+    <string name="category_pasta">Makarna</string>
+    <string name="category_smoothies_detox">Smoothie &amp; Detoks İçecekler</string>
+    <string name="category_fresh_juices">Taze Meyve Suları &amp; Limonatalar</string>
+    <string name="category_milkshakes">Milkshake &amp; Frappeler</string>
+    <string name="category_herbal_teas">Bitki Çayları</string>
+    <string name="category_special_blends">Özel Karışımlar</string>
+    <string name="category_vegan_gluten_free">Vegan &amp; Glutensiz Seçenekler</string>
+    <string name="category_kids_menu">Çocuk Menüsü</string>
+    <string name="category_chef_specials">Şef Spesiyalleri</string>
+    <string name="coffee">Kahve</string>
+
+    <!-- Shop Creation Steps -->
+    <string name="select_categories">Kategorileri Seçin</string>
+    <string name="add_custom_category">Özel Kategori Ekle</string>
+    <string name="add_custom">Özel Ekle</string>
+    <string name="category_name_label">Kategori Adı</string>
+    <string name="select_emoji">Emoji Seçin</string>
+    <string name="dialog_cancel">İptal</string>
+    <string name="dialog_add">Ekle</string>
+    <string name="add_custom_category_desc">Özel kategori ekle</string>
+
+    <!-- Shop Creation Validation -->
+    <string name="error_shop_name_required">Dükkan adı gerekli</string>
+    <string name="error_address_required">Adres gerekli</string>
+    <string name="error_photos_required">En az 3 fotoğraf gerekli</string>
+    <string name="error_categories_required">En az bir kategori gerekli</string>
+    <string name="error_products_required">En az bir ürün gerekli</string>
+    <string name="shop_creation_success">Dükkan başarıyla oluşturuldu!</string>
+    <string name="shop_creation_error">Dükkan oluşturulamadı. Lütfen tekrar deneyin.</string>
+
+    <!-- Products Screen -->
+    <string name="remove_product">Ürünü Kaldır</string>
+    <string name="invalid_price">Lütfen geçerli bir fiyat girin</string>
+    <string name="no_products">Bu kategoride henüz ürün yok</string>
 
 </resources>

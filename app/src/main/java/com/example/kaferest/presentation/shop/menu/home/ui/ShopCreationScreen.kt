@@ -25,21 +25,17 @@ fun ShopCreationScreen(
     var currentStep by remember { mutableStateOf(0) }
     
     val steps = listOf(
-        "Basic Info",
-        "Location",
-        "Photos",
-        "Categories",
-        "Products"
+        stringResource(R.string.enter_shop_name),
+        stringResource(R.string.select_location),
+        stringResource(R.string.add_shop_photos),
+        stringResource(R.string.create_categories),
+        stringResource(R.string.create_products)
     )
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.create_shop)) },
-                navigationIcon = {
-                    MenuBackButton(onClick = { navController.navigateUp() })
-                }
-            )
+                title = { Text(stringResource(R.string.create_shop)) })
         }
     ) { paddingValues ->
         Column(
@@ -76,7 +72,7 @@ fun ShopCreationScreen(
                     }
                 )
                 1 -> LocationStep(
-                    onLocationPermissionGranted = { viewModel.requestLocation() },
+                    onLocationPermissionGranted = { /*viewModel.requestLocation()*/ },
                     onNext = { newShopAddress ->
                         viewModel.onEvent(
                             ShopCreationEvent.UpdateShopAdress(
@@ -88,13 +84,14 @@ fun ShopCreationScreen(
                 )
 
                 2 -> PhotoStep(
-                    onNext = {
-                        viewModel.uploadPhotos()
+                    onNext = { photos ->
+                        viewModel.onEvent(
+                            ShopCreationEvent.UpdateShopPhotos(photos)
+                        )
                         currentStep++
                     },
                     onBack = { currentStep-- }
                 )
-
 
                 3 -> CategoriesStep(
                     categories = state.categories,
@@ -103,6 +100,7 @@ fun ShopCreationScreen(
                     onNext = { currentStep++ },
                     onBack = { currentStep-- }
                 )
+
                 4 -> ProductsStep(
                     products = state.products,
                     categories = state.categories,

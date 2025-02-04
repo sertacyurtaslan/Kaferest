@@ -7,13 +7,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -32,12 +33,12 @@ import org.burnoutcrew.reorderable.*
 
 @Composable
 fun PhotoStep(
-    onNext: () -> Unit,
+    onNext: (List<Uri>) -> Unit,
     onBack: () -> Unit
 ) {
     var selectedPhotos by remember { mutableStateOf<List<Uri>>(emptyList()) }
     val context = LocalContext.current
-    
+
     val photoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetMultipleContents()
     ) { uris ->
@@ -49,44 +50,57 @@ fun PhotoStep(
 
     val state = rememberReorderableLazyGridState(
         onMove = { from, to ->
-            selectedPhotos = selectedPhotos.toMutableList().apply {
-                add(to.index, removeAt(from.index))
+            // Sadece yatay hareket için: aynı satırdaki itemler arasında
+            val fromRow = from.index / 3
+            val toRow = to.index / 3
+            val fromCol = from.index % 3
+            val toCol = to.index % 3
+            
+            // Sadece aynı satırda ve yan yana olan itemler için harekete izin ver
+            if (fromRow == toRow && kotlin.math.abs(fromCol - toCol) == 1) {
+                selectedPhotos = selectedPhotos.toMutableList().apply {
+                    add(to.index, removeAt(from.index))
+                }
             }
-        }
+        },
+
     )
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = stringResource(R.string.add_photos),
-            style = Typography.titleLarge,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
 
         LazyVerticalGrid(
-            columns = GridCells.Fixed(3),
+            columns = GridCells.Fixed(1),
             state = state.gridState,
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+                .fillMaxHeight(0.85f)
+                .reorderable(state),
+            contentPadding = PaddingValues(vertical = 4.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(selectedPhotos, { it.toString() }) { photo ->
-                ReorderableItem(state, key = photo.toString()) { isDragging ->
+            items(
+                items = selectedPhotos,
+                key = { it.toString() }
+            ) { photo ->
+                ReorderableItem(state = state, key = photo.toString()) { isDragging ->
                     Box(
                         modifier = Modifier
-                            .aspectRatio(1f)
+                            .fillMaxWidth()
+                            .height(180.dp)
                             .clip(RoundedCornerShape(8.dp))
                             .border(
                                 width = if (isDragging) 2.dp else 1.dp,
-                                color = if (isDragging) MaterialTheme.colorScheme.primary 
+                                color = if (isDragging) MaterialTheme.colorScheme.primary
                                        else MaterialTheme.colorScheme.outline,
                                 shape = RoundedCornerShape(8.dp)
                             )
+                            .detectReorderAfterLongPress(state)
                     ) {
                         AsyncImage(
                             model = ImageRequest.Builder(context)
@@ -97,7 +111,7 @@ fun PhotoStep(
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.fillMaxSize()
                         )
-                        
+
                         // Remove button
                         IconButton(
                             onClick = {
@@ -119,22 +133,6 @@ fun PhotoStep(
                                 modifier = Modifier.size(16.dp)
                             )
                         }
-                        
-                        // Drag handle
-                        Icon(
-                            Icons.Default.ArrowDropDown,
-                            contentDescription = stringResource(R.string.drag_to_reorder),
-                            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
-                            modifier = Modifier
-                                .align(Alignment.BottomCenter)
-                                .padding(4.dp)
-                                .size(24.dp)
-                                .background(
-                                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f),
-                                    shape = RoundedCornerShape(4.dp)
-                                )
-                                .padding(4.dp)
-                        )
                     }
                 }
             }
@@ -143,7 +141,8 @@ fun PhotoStep(
                 item {
                     Box(
                         modifier = Modifier
-                            .aspectRatio(1f)
+                            .fillMaxWidth()
+                            .height(180.dp)
                             .clip(RoundedCornerShape(8.dp))
                             .border(
                                 width = 1.dp,
@@ -185,9 +184,7 @@ fun PhotoStep(
             }
             
             Button(
-                onClick = {
-                    onNext()
-                },
+                onClick = { onNext(selectedPhotos) },
                 enabled = selectedPhotos.isNotEmpty()
             ) {
                 Text(stringResource(R.string.next))
