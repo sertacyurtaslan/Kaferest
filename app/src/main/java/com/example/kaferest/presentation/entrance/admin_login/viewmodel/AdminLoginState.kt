@@ -8,6 +8,7 @@ data class AdminLoginState(
     val ownerPassword: String = "",
     val matchError: String? = null,
     val isLoading: Boolean = false,
+    val isNewShop: Boolean = false,
     val errorMessage: String? = null,
     val successMessage: String? = null
 )

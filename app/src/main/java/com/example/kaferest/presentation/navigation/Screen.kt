@@ -14,6 +14,7 @@ sealed class Screen(val route: String){
     data object ShopDetail : Screen("shop/{shopId}") {
         fun createRoute(shopId: String) = "shop/$shopId"
     }
+    data object AdminHomeScreen: Screen(route = "admin_home_screen")
     data object AdminMainScreen: Screen(route = "admin_main_screen")
     data object ShopCreationScreen: Screen(route = "shop_creation_screen")
 

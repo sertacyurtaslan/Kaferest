@@ -62,7 +62,7 @@ fun SplashScreen(
         if (state.isAdminInitialized) {
             when (state.isAdminSignedIn) {
                 true -> {
-                    navController.navigate(Screen.ShopCreationScreen.route) {
+                    navController.navigate(Screen.AdminMainScreen.route) {
                         popUpTo(Screen.SplashScreen.route) { inclusive = true }
                     }
                 }

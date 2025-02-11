@@ -31,14 +31,6 @@ import com.example.kaferest.domain.model.Shop
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-data class Cafe (
-    val name: String? = null,
-    val image: String? = null,
-    val address: String? = null,
-    val rating: Double = 0.0,
-    val distance: String? = null,
-    val isPromoted: Boolean = false
-)
 
 @Composable
 fun HomeScreen(
@@ -56,8 +48,6 @@ fun HomeScreen(
         "https://picsum.photos/800/402",
         "https://picsum.photos/800/403"
     )
-
-    // Sample categories
     val categories = listOf(
         Category(painterResource(R.drawable.cappuccino) , stringResource(R.string.cappuccino)),
         Category(painterResource(R.drawable.espresso), stringResource(R.string.espresso)),
@@ -68,14 +58,6 @@ fun HomeScreen(
         Category(painterResource(R.drawable.pancakes), stringResource(R.string.pancakes)),
         Category(painterResource(R.drawable.croissant), stringResource(R.string.croissant)),
         Category(painterResource(R.drawable.simit), stringResource(R.string.simit))
-    )
-
-    // Sample cafes
-    val cafes = listOf(
-        Cafe("Cafe Mocha", "https://picsum.photos/200/200","", 4.5, "1.2 km", true),
-        Cafe("Star Coffee", "https://picsum.photos/200/201","" ,4.2, "0.8 km"),
-        Cafe("Bean Scene", "https://picsum.photos/200/202", "",4.8, "2.1 km", true),
-        Cafe("Coffee House", "https://picsum.photos/200/203","", 4.0, "1.5 km")
     )
 
     val pagerState = rememberPagerState(pageCount = { carouselItems.size })
@@ -181,22 +163,21 @@ fun HomeScreen(
                     modifier = Modifier.padding(horizontal = 16.dp)
                 )
 
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
+                LazyRow(
                     contentPadding = PaddingValues(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    modifier = Modifier.height(400.dp)
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    items(cafes) { cafe ->
-                        CafeCard(cafe)
+                    items(state.shops.take(5)) { shop ->
+                        ShopCard(
+                            shop = shop,
+                            onClick = { homeViewModel.selectShop(shop) }
+                        )
                     }
                 }
             }
         }
     }
 }
-
 
 
 

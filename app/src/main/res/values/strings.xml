@@ -202,8 +202,27 @@
     <string name="remove_product">Remove Product</string>
     <string name="invalid_price">Please enter a valid price</string>
     <string name="no_products">No products in this category yet</string>
+    <string name="products_count">%d products</string>
 
     <!-- Product Photo -->
     <string name="change_photo">Change Photo</string>
     <string name="product_photo">Product Photo</string>
+
+    <!-- Delete Confirmations -->
+    <string name="delete_product_title">Delete Product</string>
+    <string name="delete_product_confirmation">Are you sure you want to delete %1$s?</string>
+    <string name="delete_category_title">Delete Category</string>
+    <string name="delete_category_confirmation">Are you sure you want to delete the category \"%1$s\" and all its products?</string>
+    <string name="delete">Delete</string>
+    <string name="remove_category">Remove Category</string>
+
+    <!-- Admin Home Screen -->
+    <string name="my_shop">My Shop</string>
+    <string name="menu_categories">Menu Categories</string>
+    <string name="no_shop_data">No shop data available</string>
+    <string name="error">Error</string>
+    <string name="ok">OK</string>
+    <string name="shop_address">Shop Address</string>
+    <string name="no_shops_available">No shops available</string>
+    <string name="menu">Menu</string>
 </resources>

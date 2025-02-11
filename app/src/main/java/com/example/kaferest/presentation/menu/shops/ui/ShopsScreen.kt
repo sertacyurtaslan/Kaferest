@@ -1,6 +1,6 @@
 package com.example.kaferest.presentation.menu.shops.ui
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -13,84 +13,28 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.example.kaferest.presentation.menu.shops.viewmodel.ShopsViewModel
+import com.example.kaferest.R
+import com.example.kaferest.domain.model.Shop
+import com.example.kaferest.presentation.menu.home.viewmodel.HomeViewModel
 import com.example.kaferest.presentation.navigation.Screen
-
-data class Shop(
-    val id: String,
-    val name: String,
-    val image: String,
-    val rating: Float,
-    val totalRatings: Int,
-    val description: String,
-    val categories: List<String>,
-    val priceRange: String,
-    val address: String
-)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShopsScreen(
     navController: NavController,
-    viewModel: ShopsViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
+    val state by viewModel.state.collectAsState()
     var searchQuery by remember { mutableStateOf("") }
-
-    // Sample shops data
-    val shops = remember {
-        listOf(
-            Shop(
-                id = "1",
-                name = "Coffee House",
-                image = "https://picsum.photos/400/300",
-                rating = 4.5f,
-                totalRatings = 128,
-                description = "Cozy coffee shop with great ambiance",
-                categories = listOf("Coffee", "Breakfast", "Desserts"),
-                priceRange = "$$",
-                address = "789 Bağdat Caddesi, Kadıköy, Istanbul"
-            ),
-            Shop(
-                id = "2",
-                name = "Brew & Bites",
-                image = "https://picsum.photos/400/301",
-                rating = 4.2f,
-                totalRatings = 85,
-                description = "Artisanal coffee and fresh pastries",
-                categories = listOf("Coffee", "Pastries", "Sandwiches"),
-                priceRange = "$",
-                address = "123 İstiklal Caddesi, Beyoğlu, Istanbul"
-            ),
-            Shop(
-                id = "3",
-                name = "The Daily Grind",
-                image = "https://picsum.photos/400/302",
-                rating = 4.8f,
-                totalRatings = 256,
-                description = "Premium coffee and light meals",
-                categories = listOf("Coffee", "Lunch", "Smoothies"),
-                priceRange = "$$$",
-                address = "456 Nişantaşı Mahallesi, Şişli, Istanbul"
-            ),
-            Shop(
-                id = "4",
-                name = "Bean Scene",
-                image = "https://picsum.photos/400/303",
-                rating = 4.3f,
-                totalRatings = 164,
-                description = "Specialty coffee and brunch spot",
-                categories = listOf("Coffee", "Brunch", "Tea"),
-                priceRange = "$$",
-                address = "321 Cihangir Sokak, Beyoğlu, Istanbul"
-            )
-        )
-    }
 
     Column(
         modifier = Modifier
@@ -104,8 +48,8 @@ fun ShopsScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 16.dp),
-            placeholder = { Text("Search cafes...") },
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search") },
+            placeholder = { Text(stringResource(R.string.search_cafes)) },
+            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
             shape = MaterialTheme.shapes.medium,
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 containerColor = MaterialTheme.colorScheme.surface,
@@ -113,96 +57,135 @@ fun ShopsScreen(
             )
         )
 
-        // Shops Grid
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            items(shops.filter { 
-                it.name.contains(searchQuery, ignoreCase = true) ||
-                it.categories.any { cat -> cat.contains(searchQuery, ignoreCase = true) }
-            }) { shop ->
-                ShopCard(
-                    shop = shop,
-                    onShopClick = {
-                            navController.navigate(Screen.ShopDetail.createRoute(shop.id))
-                    }
+        if (state.isLoading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        } else if (state.shops.isEmpty()) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(R.string.no_shops_available),
+                    style = MaterialTheme.typography.titleLarge
                 )
             }
+        } else {
+            // Shops Grid
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                items(
+                    state.shops.filter { shop ->
+                        searchQuery.isEmpty() || shop.shopName.contains(searchQuery, ignoreCase = true)
+                    }
+                ) { shop ->
+                    ShopCard(
+                        shop = shop,
+                        onClick = {
+                            viewModel.selectShop(shop)
+                            navController.navigate(Screen.ShopDetail.createRoute(shop.shopName))
+                        }
+                    )
+                }
+            }
         }
+    }
+
+    // Error handling
+    if (state.error.isNotEmpty()) {
+        AlertDialog(
+            onDismissRequest = { viewModel.clearError() },
+            title = { Text(stringResource(R.string.error)) },
+            text = { Text(state.error) },
+            confirmButton = {
+                TextButton(onClick = { viewModel.clearError() }) {
+                    Text(stringResource(R.string.ok))
+                }
+            }
+        )
     }
 }
 
 @Composable
-fun ShopCard(
+private fun ShopCard(
     shop: Shop,
-    onShopClick: () -> Unit
+    onClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onShopClick),
+            .fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
+        onClick = onClick
     ) {
-        Column {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(160.dp)
+        ) {
             // Shop Image
-            AsyncImage(
-                model = shop.image,
-                contentDescription = shop.name,
+            if (shop.shopImages.isNotEmpty()) {
+                AsyncImage(
+                    model = shop.shopImages.first(),
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+            }
+
+            // Gradient overlay
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp)
-                    .clip(MaterialTheme.shapes.medium),
-                contentScale = ContentScale.Crop
+                    .fillMaxSize()
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(
+                                Color.Transparent,
+                                Color.Black.copy(alpha = 0.7f)
+                            ),
+                            startY = 100f
+                        )
+                    )
             )
 
             // Shop Info
             Column(
-                modifier = Modifier.padding(12.dp)
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(12.dp)
             ) {
                 Text(
-                    text = shop.name,
+                    text = shop.shopName,
                     style = MaterialTheme.typography.titleMedium,
+                    color = Color.White,
                     fontWeight = FontWeight.Bold
                 )
-
+                
                 Spacer(modifier = Modifier.height(4.dp))
-
-                // Rating and Price Range
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                
+                Row {
+                    repeat(5) { index ->
                         Icon(
-                            Icons.Default.Star,
-                            contentDescription = "Rating",
-                            modifier = Modifier.size(16.dp),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = "${shop.rating} (${shop.totalRatings})",
-                            style = MaterialTheme.typography.bodySmall
+                            imageVector = Icons.Default.Star,
+                            contentDescription = null,
+                            tint = if (index < shop.shopRating) 
+                                MaterialTheme.colorScheme.primary 
+                                else Color.White.copy(alpha = 0.5f),
+                            modifier = Modifier.size(16.dp)
                         )
                     }
-                    Text(
-                        text = shop.priceRange,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                    )
                 }
 
-                Spacer(modifier = Modifier.height(4.dp))
-
-                // Categories
                 Text(
-                    text = shop.categories.joinToString(" • "),
+                    text = shop.shopAddress,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
-                    maxLines = 1
+                    color = Color.White.copy(alpha = 0.8f)
                 )
             }
         }

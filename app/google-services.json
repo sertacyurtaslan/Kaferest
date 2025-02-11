@@ -1,0 +1,47 @@
+{
+        "project_info": {
+        "project_number": "1069330761760",
+        "project_id": "kaferest-7a89c",
+        "storage_bucket": "kaferest-7a89c.firebasestorage.app"
+        },
+        "client": [
+        {
+        "client_info": {
+        "mobilesdk_app_id": "1:1069330761760:android:548ed400626add211a9445",
+        "android_client_info": {
+        "package_name": "com.example.kaferest"
+        }
+        },
+        "oauth_client": [
+        {
+        "client_id": "1069330761760-852vf58a2r8455ie455avajjpgi16q61.apps.googleusercontent.com",
+        "client_type": 1,
+        "android_info": {
+        "package_name": "com.example.kaferest",
+        "certificate_hash": "055b3adbe14ac0f90aedea5af92b23f4b44d069f"
+        }
+        },
+        {
+        "client_id": "1069330761760-v5a244smi69hj8vdv8icfu87s5i07tdj.apps.googleusercontent.com",
+        "client_type": 3
+        }
+        ],
+        "api_key": [
+        {
+        "current_key": "AIzaSyA1-Dl_p-g4SIeBnhOMY5h3yg8dGaJQA3o"
+        }
+        ],
+        "services": {
+        "appinvite_service": {
+        "other_platform_oauth_client": [
+        {
+        "client_id": "1069330761760-v5a244smi69hj8vdv8icfu87s5i07tdj.apps.googleusercontent.com",
+        "client_type": 3
+        }
+        ]
+        }
+        }
+        }
+        ],
+        "configuration_version": "1"
+        }

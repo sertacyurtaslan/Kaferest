@@ -67,6 +67,12 @@ fun AdminLoginScreen(
 
     LaunchedEffect(state.successMessage) {
         if (state.successMessage != null) {
+            navController.navigate(Screen.AdminMainScreen.route)
+        }
+    }
+
+    LaunchedEffect(state.isNewShop) {
+        if (state.isNewShop) {
             navController.navigate(Screen.ShopCreationScreen.route)
         }
     }

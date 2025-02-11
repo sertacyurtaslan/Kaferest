@@ -1,8 +1,8 @@
 package com.example.kaferest.presentation.menu.shops.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -13,65 +13,43 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.example.kaferest.presentation.menu.shops.viewmodel.ShopsViewModel
-
-data class MenuItem(
-    val id: String,
-    val name: String,
-    val description: String,
-    val price: Double,
-    val image: String,
-    val category: String
-)
+import com.example.kaferest.R
+import com.example.kaferest.domain.model.Product
+import com.example.kaferest.presentation.menu.home.viewmodel.HomeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShopDetailScreen(
     shopId: String,
     navController: NavController,
-    viewModel: ShopsViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
-    // Sample menu items
-    val menuItems = remember {
-        listOf(
-            MenuItem(
-                id = "1",
-                name = "Cappuccino",
-                description = "Classic Italian coffee drink",
-                price = 4.99,
-                image = "https://picsum.photos/200/200",
-                category = "Coffee"
-            ),
-            MenuItem(
-                id = "2",
-                name = "Croissant",
-                description = "Buttery, flaky pastry",
-                price = 3.99,
-                image = "https://picsum.photos/200/201",
-                category = "Pastries"
-            ),
-            MenuItem(
-                id = "3",
-                name = "Avocado Toast",
-                description = "Fresh avocado on sourdough",
-                price = 8.99,
-                image = "https://picsum.photos/200/202",
-                category = "Breakfast"
-            )
-        )
+    val state by viewModel.state.collectAsState()
+    val shop = state.selectedShop
+    
+    if (shop == null) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
+        }
+        return
     }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Shop Details") },
+                title = { Text(shop.shopName) },
                 navigationIcon = {
                     IconButton(onClick = { navController.navigateUp() }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
@@ -85,104 +63,161 @@ fun ShopDetailScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            // Shop Header
+            // Shop Header with Images
             item {
-                AsyncImage(
-                    model = "https://picsum.photos/800/400",
-                    contentDescription = "Shop Image",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp),
-                    contentScale = ContentScale.Crop
-                )
-
-                Column(
-                    modifier = Modifier.padding(16.dp)
-                ) {
-                    Text(
-                        text = "Coffee House",
-                        style = MaterialTheme.typography.headlineMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    // Address Section
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(vertical = 4.dp)
+                if (shop.shopImages.isNotEmpty()) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(240.dp)
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.LocationOn,
-                            contentDescription = "Location",
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(20.dp)
+                        AsyncImage(
+                            model = shop.shopImages.first(),
+                            contentDescription = shop.shopName,
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop
                         )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = "123 Coffee Street, Cafe District",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+                        
+                        // Gradient overlay for better text visibility
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(
+                                    Brush.verticalGradient(
+                                        colors = listOf(
+                                            Color.Transparent,
+                                            Color.Black.copy(alpha = 0.7f)
+                                        ),
+                                        startY = 0f,
+                                        endY = Float.POSITIVE_INFINITY
+                                    )
+                                )
                         )
+                        
+                        // Shop info overlay
+                        Column(
+                            modifier = Modifier
+                                .align(Alignment.BottomStart)
+                                .padding(16.dp)
+                        ) {
+                            Text(
+                                text = shop.shopName,
+                                style = MaterialTheme.typography.headlineMedium,
+                                color = Color.White,
+                                fontWeight = FontWeight.Bold
+                            )
+                            
+                            Spacer(modifier = Modifier.height(4.dp))
+                            
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    Icons.Default.LocationOn,
+                                    contentDescription = null,
+                                    tint = Color.White,
+                                    modifier = Modifier.size(16.dp)
+                                )
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Text(
+                                    text = shop.shopAddress,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = Color.White
+                                )
+                            }
+                            
+                            Spacer(modifier = Modifier.height(4.dp))
+                            
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    Icons.Default.Star,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.size(16.dp)
+                                )
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Text(
+                                    text = shop.shopRating.toString(),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = Color.White
+                                )
+                            }
+                        }
                     }
-                    //Rating Secion
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(vertical = 4.dp)
-
-                    ) {
-                        Icon(
-                            Icons.Default.Star,
-                            contentDescription = "Rating",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Text(
-                            text = "4.5 (128 reviews)",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
-
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Text(
-                        text = "$$$ • Coffee, Breakfast, Lunch",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-
                 }
             }
 
-            // Menu Categories
+            // Products Section
             item {
                 Text(
-                    text = "Menu",
+                    text = stringResource(R.string.menu),
                     style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                    modifier = Modifier.padding(16.dp)
                 )
+            }
 
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(listOf("All", "Coffee", "Pastries", "Breakfast", "Lunch")) { category ->
-                        FilterChip(
-                            selected = category == "All",
-                            onClick = { /* Handle category selection */ },
-                            label = { Text(category) }
-                        )
-                    }
+            // Display products by category
+            shop.shopCategories.forEach { category ->
+                item {
+                    Text(
+                        text = category.categoryName,
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                    )
+                }
+
+                items(category.categoryProducts) { product ->
+                    ProductCard(product = product)
                 }
             }
+        }
+    }
+}
 
-            // Menu Items
-            items(menuItems) { menuItem ->
-                MenuItemCard(menuItem)
+@Composable
+private fun ProductCard(product: Product) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            if (product.productPhotoUri.isNotEmpty()) {
+                AsyncImage(
+                    model = product.productPhotoUri,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(60.dp)
+                        .clip(MaterialTheme.shapes.small),
+                    contentScale = ContentScale.Crop
+                )
             }
-
+            
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = product.productName,
+                    style = MaterialTheme.typography.titleMedium
+                )
+            }
+            
+            Text(
+                text = "₺${product.productPrice}",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.primary
+            )
         }
     }
 }

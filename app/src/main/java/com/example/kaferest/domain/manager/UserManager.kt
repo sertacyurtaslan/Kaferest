@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.kaferest.domain.model.Shop
 import com.example.kaferest.domain.model.User
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
@@ -32,7 +33,7 @@ class UserManager @Inject constructor(
         }
     }
 
-    suspend fun saveAdmin(admin: User) {
+    suspend fun saveAdmin(admin: Shop) {
         context.dataStore.edit { preferences ->
             preferences[ADMIN_KEY] = gson.toJson(admin)
             // When saving an admin, clear any regular user data

@@ -202,5 +202,23 @@
     <string name="remove_product">Ürünü Kaldır</string>
     <string name="invalid_price">Lütfen geçerli bir fiyat girin</string>
     <string name="no_products">Bu kategoride henüz ürün yok</string>
+    <string name="products_count">%d ürün</string>
+
+    <string name="delete_product_title">Ürünü Sil</string>
+    <string name="delete_product_confirmation">%1$s ürününü silmek istediğinizden emin misiniz?</string>
+    <string name="delete_category_title">Kategoriyi Sil</string>
+    <string name="delete_category_confirmation">\"%1$s\" kategorisini ve içindeki tüm ürünleri silmek istediğinizden emin misiniz?</string>
+    <string name="delete">Sil</string>
+    <string name="remove_category">Kategoriyi Sil</string>
+
+    <!-- Admin Home Screen -->
+    <string name="my_shop">Dükkanım</string>
+    <string name="menu_categories">Menü Kategorileri</string>
+    <string name="no_shop_data">Dükkan verisi bulunamadı</string>
+    <string name="error">Hata</string>
+    <string name="ok">Tamam</string>
+    <string name="shop_address">Dükkan Adresi</string>
+    <string name="no_shops_available">Dükkan bulunamadı</string>
+    <string name="menu">Menü</string>
 
 </resources>
