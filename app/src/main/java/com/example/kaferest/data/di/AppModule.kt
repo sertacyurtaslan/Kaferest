@@ -6,7 +6,7 @@ import com.example.kaferest.data.firebase.KaferestRepositoryImpl
 import com.example.kaferest.data.preferences.PreferenceManager
 import com.example.kaferest.domain.manager.UserManager
 import com.example.kaferest.domain.repository.KaferestRepository
-import com.example.kaferest.presentation.entrance.intro.viewmodel.GoogleAuthUiClient
+import com.example.kaferest.presentation.auth.menu.intro.viewmodel.GoogleAuthUiClient
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore

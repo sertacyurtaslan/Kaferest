@@ -225,4 +225,22 @@
     <string name="shop_address">Shop Address</string>
     <string name="no_shops_available">No shops available</string>
     <string name="menu">Menu</string>
+
+    <!-- Home Screen -->
+    <string name="good_morning">Good Morning!</string>
+    <string name="good_afternoon">Good Afternoon!</string>
+    <string name="good_evening">Good Evening!</string>
+    <string name="good_night">Good Night!</string>
+    <string name="what_would_you_like">What would you like today?</string>
+    <string name="search_hint">Search cafes and foods</string>
+    <string name="near_me">Near Me</string>
+    <string name="open_now">Open Now</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="see_all">See All</string>
+    <string name="todays_specials">Today\'s Specials</string>
+    <string name="special_offer_text">Get 20% off on selected items</string>
+    <string name="view_offers">View Offers</string>
+    <string name="near_you">Near You</string>
+    <string name="map_preview">Map Preview</string>
+    <string name="recent_search">Recent search %1$d</string>
 </resources>

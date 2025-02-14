@@ -8,7 +8,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.example.kaferest.data.preferences.PreferenceManager
 import com.example.kaferest.data.preferences.ThemePreferences
-import com.example.kaferest.presentation.navigation.ScreenNavigation
+import com.example.kaferest.presentation.navigation.KaferestNavigation
 import com.example.kaferest.ui.theme.KaferestTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
             val isDarkMode by themePreferences.isDarkMode.collectAsState(initial = false)
 
             KaferestTheme(darkTheme = isDarkMode) {
-                ScreenNavigation()
+                KaferestNavigation()
             }
         }
     }
