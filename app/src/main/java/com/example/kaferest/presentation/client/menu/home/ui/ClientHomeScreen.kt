@@ -32,13 +32,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import com.example.kaferest.presentation.navigation.Screen
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.TextButton
 import java.util.Calendar
