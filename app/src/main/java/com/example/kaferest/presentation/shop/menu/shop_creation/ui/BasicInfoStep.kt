@@ -1,6 +1,7 @@
-package com.example.kaferest.presentation.admin.menu.shop_creation.ui
+package com.example.kaferest.presentation.shop.menu.shop_creation.ui
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.kaferest.R
 import com.example.kaferest.presentation.components.CustomIconTextField
@@ -26,6 +28,7 @@ fun BasicInfoStep(
     onNext: (String) -> Unit
 ) {
     val shopNameState = remember { mutableStateOf("") }
+    val maxChars = 30
 
     Column(
         modifier = Modifier
@@ -39,8 +42,10 @@ fun BasicInfoStep(
             textType = KeyboardType.Text,
             leadingIcon = Icons.Default.Home,
             leadIconDesc = stringResource(R.string.lock_icon),
+            characterLimit = maxChars,
+            showCharacterCounter = true
         )
-
+        
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(

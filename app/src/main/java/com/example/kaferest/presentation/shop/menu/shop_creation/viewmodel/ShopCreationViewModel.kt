@@ -7,6 +7,7 @@ import com.example.kaferest.domain.manager.UserManager
 import com.example.kaferest.domain.model.Category
 import com.example.kaferest.domain.model.Product
 import com.example.kaferest.domain.model.Shop
+import com.example.kaferest.presentation.shop.menu.shop_creation.viewmodel.ShopCreationState
 import com.example.kaferest.util.CurrentDate
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore

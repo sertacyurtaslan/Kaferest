@@ -46,7 +46,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import com.example.kaferest.presentation.entrance.login.viewmodel.LoginScreenEvent
 import com.example.kaferest.presentation.entrance.login.viewmodel.LoginViewModel
 import com.example.kaferest.util.ValidationUtils
@@ -207,7 +206,7 @@ fun LoginScreen(
 
                             CustomButton(
                                 onClick = {
-                                    navController.navigate(Screen.AdminLoginScreen.route)
+                                    navController.navigate(Screen.ShopLoginScreen.route)
                                 },
                                 modifier = Modifier.fillMaxWidth(),
                                 isOutlined = true,
@@ -215,7 +214,7 @@ fun LoginScreen(
                                     imageVector = Icons.Default.Build,
                                     contentDescription = stringResource(R.string.sign_in_icon)
                                 ),
-                                text = stringResource(R.string.admin_login),
+                                text = stringResource(R.string.shop_login),
                                 style = Typography.titleMedium
                             )
                             Spacer(modifier = Modifier.height(5.dp))

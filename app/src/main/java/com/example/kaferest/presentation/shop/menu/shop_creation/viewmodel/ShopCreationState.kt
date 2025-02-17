@@ -1,4 +1,4 @@
-package com.example.kaferest.presentation.admin.menu.shop_creation.viewmodel
+package com.example.kaferest.presentation.shop.menu.shop_creation.viewmodel
 
 import android.net.Uri
 import androidx.compose.runtime.Immutable

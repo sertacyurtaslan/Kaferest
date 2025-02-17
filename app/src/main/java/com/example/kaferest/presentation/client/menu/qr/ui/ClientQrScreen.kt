@@ -1,4 +1,4 @@
-package com.example.kaferest.presentation.menu.qr.ui
+package com.example.kaferest.presentation.client.menu.qr.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -16,24 +16,25 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.kaferest.R
-import com.example.kaferest.presentation.menu.qr.viewmodel.QrViewModel
+import com.example.kaferest.presentation.client.nav.viewmodel.ClientMainViewModel
 import com.example.kaferest.util.QrCodeGenerator
 
 @Composable
 fun ClientQrScreen(
     navController: NavController,
-    viewModel: QrViewModel = hiltViewModel()
+    viewModel: ClientMainViewModel
 ) {
     val state by viewModel.state.collectAsState()
     val density = LocalDensity.current
     val qrSize = with(density) { 200.dp.toPx().toInt() }
-    
-    val qrBitmap = remember(state.userId) {
-        if (state.userId.isNotEmpty()) {
-            QrCodeGenerator.generateQrCode(state.userId, qrSize)
+
+    val userId = state.user?.userId ?: ""
+
+    val qrBitmap = remember(userId) {
+        if (userId.isNotEmpty()) {
+            QrCodeGenerator.generateQrCode(state.user?.userId!!, qrSize)
         } else null
     }
 
@@ -115,7 +116,7 @@ fun ClientQrScreen(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = stringResource(R.string.qr_user_id, state.userId),
+                        text = stringResource(R.string.qr_user_id, userId),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center,
@@ -162,15 +163,13 @@ fun ClientQrScreen(
                 modifier = Modifier.padding(horizontal = 32.dp)
             )
 
-            if (state.error != null) {
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = state.error!!,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.error,
-                    textAlign = TextAlign.Center
-                )
-            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = state.error,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.error,
+                textAlign = TextAlign.Center
+            )
         }
     }
 }

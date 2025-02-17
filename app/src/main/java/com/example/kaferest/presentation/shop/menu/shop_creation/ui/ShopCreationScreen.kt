@@ -16,6 +16,8 @@ import com.example.kaferest.presentation.admin.menu.shop_creation.viewmodel.Shop
 import com.example.kaferest.presentation.admin.menu.shop_creation.viewmodel.ShopCreationViewModel
 import com.example.kaferest.presentation.admin.menu.shop_creation.ui.products.ProductsStep
 import com.example.kaferest.presentation.navigation.Screen
+import com.example.kaferest.presentation.shop.menu.shop_creation.ui.BasicInfoStep
+import com.example.kaferest.presentation.shop.menu.shop_creation.ui.LocationStep
 import com.example.kaferest.ui.theme.Typography
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -25,7 +27,7 @@ fun ShopCreationScreen(
     viewModel: ShopCreationViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.collectAsState().value
-    var currentStep by remember { mutableStateOf(0) }
+    var currentStep by remember { mutableIntStateOf(0) }
     
     val steps = listOf(
         stringResource(R.string.enter_shop_name),

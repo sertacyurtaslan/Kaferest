@@ -6,6 +6,11 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- OpenGL ES version 2 for Maps -->
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
     <application
         android:name=".KaferestApplication"
         android:allowBackup="true"
@@ -29,6 +34,9 @@
         </activity>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDI-WbjNRfzG4LsLNI30TsCi7eWIw2cOv4" />
+            android:value="AIzaSyAlTHIjCVCk45sosLpOtEKIbNn3EzE16lo" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 </manifest>

@@ -1,4 +1,4 @@
-package com.example.kaferest.presentation.entrance.admin_login.ui
+package com.example.kaferest.presentation.auth.menu.shop_login.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -40,16 +40,16 @@ import com.example.kaferest.presentation.components.ButtonContent
 import com.example.kaferest.presentation.components.CustomButton
 import com.example.kaferest.presentation.components.CustomIconTextField
 import com.example.kaferest.presentation.components.MenuBackButton
-import com.example.kaferest.presentation.entrance.admin_login.viewmodel.AdminLoginEvent
+import com.example.kaferest.presentation.auth.menu.shop_login.viewmodel.ShopLoginEvent
 import com.example.kaferest.ui.theme.Typography
-import com.example.kaferest.presentation.entrance.admin_login.viewmodel.AdminLoginViewModel
+import com.example.kaferest.presentation.auth.menu.shop_login.viewmodel.ShopLoginViewModel
 import com.example.kaferest.presentation.navigation.Screen
 import com.example.kaferest.util.ValidationUtils
 
 @Composable
-fun AdminLoginScreen(
+fun ShopLoginScreen(
     navController: NavController,
-    viewModel: AdminLoginViewModel = hiltViewModel()
+    viewModel: ShopLoginViewModel = hiltViewModel()
 ) {
     val emailState = remember { mutableStateOf("") }
     val passwordState = remember { mutableStateOf("") }
@@ -114,7 +114,7 @@ fun AdminLoginScreen(
                             verticalArrangement = Arrangement.Center
                         ) {
                             Text(
-                                text = stringResource(R.string.admin_login),
+                                text = stringResource(R.string.shop_login),
                                 style = Typography.displayMedium,
                                 modifier = Modifier.align(Alignment.CenterHorizontally)
                             )
@@ -157,7 +157,7 @@ fun AdminLoginScreen(
                             CustomButton(
                                 onClick = {
                                     viewModel.onEvent(
-                                        AdminLoginEvent.LoginOwner(
+                                        ShopLoginEvent.LoginOwner(
                                             emailState.value,
                                             passwordState.value
                                         )

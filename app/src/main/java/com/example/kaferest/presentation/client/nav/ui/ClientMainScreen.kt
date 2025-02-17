@@ -1,5 +1,7 @@
 package com.example.kaferest.presentation.client.nav.ui
 
+import android.app.Activity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +23,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -42,6 +45,11 @@ fun ClientMainScreen(
 ) {
     val navController = rememberNavController()
     val state by viewModel.state.collectAsState()
+    val activity = LocalContext.current as? Activity
+
+    BackHandler {
+        activity?.finish()
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Scaffold(
@@ -52,7 +60,14 @@ fun ClientMainScreen(
                 FloatingActionButton(
                     onClick = {
                         navController.navigate(Screen.ClientQrScreen.route) {
+                            // Pop up to the start destination of the graph to
+                            // avoid building up a large stack of destinations
+                            popUpTo(Screen.ClientHomeScreen.route) {
+                                saveState = true
+                            }
+                            // Avoid multiple copies of the same destination
                             launchSingleTop = true
+                            // Restore state when reselecting a previously selected item
                             restoreState = true
                         }
                     },
@@ -77,7 +92,10 @@ fun ClientMainScreen(
             floatingActionButtonPosition = FabPosition.Center
         ) { paddingValues ->
             Box(modifier = Modifier.padding(paddingValues)) {
-                ClientNavigation(navController, rootNavController)
+                ClientNavigation(
+                    navController = navController,
+                    rootNavController = rootNavController
+                )
             }
         }
 

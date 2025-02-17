@@ -39,7 +39,7 @@
     <string name="select_your_preferences">Select your\n\npreferences</string>
     <string name="t_continue">Continue</string>
     <string name="already_have_an_account_log_in">Already have an account? Log In</string>
-    <string name="admin_login">Admin Login</string>
+    <string name="shop_login">Shop Login</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="ready_to_dive_into_your_shop">Ready to dive into your shop?</string>
     <string name="let_get_started">Let\'s get started!</string>
@@ -243,4 +243,7 @@
     <string name="near_you">Near You</string>
     <string name="map_preview">Map Preview</string>
     <string name="recent_search">Recent search %1$d</string>
+
+    <!-- API Keys -->
+    <string name="maps_api_key" translatable="false">AIzaSyAlTHIjCVCk45sosLpOtEKIbNn3EzE16lo</string>
 </resources>

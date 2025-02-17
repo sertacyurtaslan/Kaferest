@@ -39,7 +39,7 @@
     <string name="select_your_preferences">Tercihlerinizi\n\nseçin</string>
     <string name="t_continue">Devam Et</string>
     <string name="already_have_an_account_log_in">Zaten hesabınız var mı? Giriş Yapın</string>
-    <string name="admin_login">Yönetici Girişi</string>
+    <string name="shop_login">Mağaza Girişi</string>
     <string name="forgot_password">Şifremi unuttum?</string>
     <string name="ready_to_dive_into_your_shop">Mağazanıza dalmaya hazır mısınız?</string>
     <string name="let_get_started">Hadi başlayalım!</string>

@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import com.example.kaferest.presentation.auth.menu.intro.ui.IntroScreen
 import com.example.kaferest.presentation.auth.menu.login.ui.LoginScreen
 import com.example.kaferest.presentation.entrance.register.ui.RegisterScreen
-import com.example.kaferest.presentation.entrance.admin_login.ui.AdminLoginScreen
+import com.example.kaferest.presentation.auth.menu.shop_login.ui.ShopLoginScreen
 import com.example.kaferest.presentation.entrance.forgot_password.ui.ForgotPasswordScreen
 import com.example.kaferest.presentation.auth.register.ui.EmailVerificationScreen
 import com.example.kaferest.presentation.auth.menu.register.viewmodel.RegisterViewModel
@@ -71,13 +71,13 @@ fun NavGraphBuilder.authNavigation(
 
         // Admin Login Screen
         composable(
-            route = Screen.AdminLoginScreen.route,
+            route = Screen.ShopLoginScreen.route,
             enterTransition = { enterTransition() },
             exitTransition = { exitTransition() },
             popEnterTransition = { popEnterTransition() },
             popExitTransition = { popExitTransition() }
         ) {
-            AdminLoginScreen(navController)
+            ShopLoginScreen(navController)
         }
 
         // Forgot Password Screen

@@ -14,10 +14,11 @@ import com.example.kaferest.presentation.navigation.NavigationAnimation.popExitT
 import com.example.kaferest.presentation.splash.ui.SplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
+import com.example.kaferest.presentation.admin.menu.shop_creation.ui.ShopCreationScreen
 import com.example.kaferest.presentation.auth.menu.intro.ui.IntroScreen
 import com.example.kaferest.presentation.auth.menu.login.ui.LoginScreen
 import com.example.kaferest.presentation.auth.register.ui.EmailVerificationScreen
-import com.example.kaferest.presentation.entrance.admin_login.ui.AdminLoginScreen
+import com.example.kaferest.presentation.auth.menu.shop_login.ui.ShopLoginScreen
 import com.example.kaferest.presentation.entrance.forgot_password.ui.ForgotPasswordScreen
 import com.example.kaferest.presentation.entrance.register.ui.RegisterScreen
 
@@ -38,7 +39,7 @@ fun KaferestNavigation() {
         //Auth
         slideComposable(Screen.IntroScreen.route) { IntroScreen(navController) }
         slideComposable(Screen.LoginScreen.route) { LoginScreen(navController) }
-        slideComposable(Screen.AdminLoginScreen.route) { AdminLoginScreen(navController) }
+        slideComposable(Screen.ShopLoginScreen.route) { ShopLoginScreen(navController) }
         slideComposable(Screen.ForgotPasswordScreen.route) { ForgotPasswordScreen(navController) }
         slideComposable(Screen.RegisterScreen.route) { RegisterScreen(navController, sharedViewModel) }
         slideComposable(Screen.EmailVerificationScreen.route) { EmailVerificationScreen(navController, sharedViewModel) }
@@ -46,6 +47,11 @@ fun KaferestNavigation() {
         // Client Navigation Graph
         slideComposable(Screen.ClientMainScreen.route) {
             ClientMainScreen(navController)
+        }
+
+        //ShopCreation
+        slideComposable(Screen.ShopCreationScreen.route) {
+            ShopCreationScreen(navController)
         }
 
         // Shop Navigation Graph

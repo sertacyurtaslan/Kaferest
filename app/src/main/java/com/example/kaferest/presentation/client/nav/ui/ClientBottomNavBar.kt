@@ -10,6 +10,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.kaferest.presentation.navigation.Screen
 
 @Composable
 fun ClientBottomNavBar(
@@ -62,9 +63,18 @@ fun ClientBottomNavBar(
                     },
                     selected = selected,
                     onClick = {
-                        navController.navigate(item.route) {
-                            launchSingleTop = true
-                            restoreState = true
+                        if (currentRoute != item.route) {
+                            navController.navigate(item.route) {
+                                // Pop up to the start destination of the graph to
+                                // avoid building up a large stack of destinations
+                                popUpTo(Screen.ClientHomeScreen.route) {
+                                    saveState = true
+                                }
+                                // Avoid multiple copies of the same destination
+                                launchSingleTop = true
+                                // Restore state when reselecting a previously selected item
+                                restoreState = true
+                            }
                         }
                     },
                     colors = NavigationBarItemDefaults.colors(
