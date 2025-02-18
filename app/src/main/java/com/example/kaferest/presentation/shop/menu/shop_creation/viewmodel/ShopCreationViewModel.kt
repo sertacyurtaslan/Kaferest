@@ -1,4 +1,4 @@
-package com.example.kaferest.presentation.admin.menu.shop_creation.viewmodel
+package com.example.kaferest.presentation.shop.menu.shop_creation.viewmodel
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel
@@ -7,7 +7,7 @@ import com.example.kaferest.domain.manager.UserManager
 import com.example.kaferest.domain.model.Category
 import com.example.kaferest.domain.model.Product
 import com.example.kaferest.domain.model.Shop
-import com.example.kaferest.presentation.shop.menu.shop_creation.viewmodel.ShopCreationState
+import com.example.kaferest.presentation.admin.menu.shop_creation.viewmodel.ShopCreationEvent
 import com.example.kaferest.util.CurrentDate
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -176,6 +176,7 @@ class ShopCreationViewModel @Inject constructor(
                 updatePhotos(event.shopPhotos)
             }
 
+            else -> {}
         }
     }
 }

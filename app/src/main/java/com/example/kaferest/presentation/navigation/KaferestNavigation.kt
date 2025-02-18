@@ -14,7 +14,7 @@ import com.example.kaferest.presentation.navigation.NavigationAnimation.popExitT
 import com.example.kaferest.presentation.splash.ui.SplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
-import com.example.kaferest.presentation.admin.menu.shop_creation.ui.ShopCreationScreen
+import com.example.kaferest.presentation.shop.menu.shop_creation.ui.ShopCreationScreen
 import com.example.kaferest.presentation.auth.menu.intro.ui.IntroScreen
 import com.example.kaferest.presentation.auth.menu.login.ui.LoginScreen
 import com.example.kaferest.presentation.auth.register.ui.EmailVerificationScreen

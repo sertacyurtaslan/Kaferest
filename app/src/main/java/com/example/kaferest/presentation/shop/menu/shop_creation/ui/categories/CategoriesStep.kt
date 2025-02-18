@@ -1,4 +1,4 @@
-package com.example.kaferest.presentation.admin.menu.shop_creation.ui.categories
+package com.example.kaferest.presentation.shop.menu.shop_creation.ui.categories
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -18,10 +18,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.kaferest.R
-import com.example.kaferest.data.constants.EmojiConstants
 import com.example.kaferest.data.enums.PredefinedCategories
 import com.example.kaferest.domain.model.Category
-
 
 @Composable
 fun CategoriesStep(

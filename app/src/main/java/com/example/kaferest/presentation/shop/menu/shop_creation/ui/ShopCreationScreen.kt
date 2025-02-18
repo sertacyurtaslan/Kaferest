@@ -1,4 +1,4 @@
-package com.example.kaferest.presentation.admin.menu.shop_creation.ui
+package com.example.kaferest.presentation.shop.menu.shop_creation.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -11,13 +11,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.kaferest.R
-import com.example.kaferest.presentation.admin.menu.shop_creation.ui.categories.CategoriesStep
+import com.example.kaferest.presentation.admin.menu.shop_creation.ui.PhotoStep
+import com.example.kaferest.presentation.shop.menu.shop_creation.ui.categories.CategoriesStep
 import com.example.kaferest.presentation.admin.menu.shop_creation.viewmodel.ShopCreationEvent
-import com.example.kaferest.presentation.admin.menu.shop_creation.viewmodel.ShopCreationViewModel
+import com.example.kaferest.presentation.shop.menu.shop_creation.viewmodel.ShopCreationViewModel
 import com.example.kaferest.presentation.admin.menu.shop_creation.ui.products.ProductsStep
 import com.example.kaferest.presentation.navigation.Screen
-import com.example.kaferest.presentation.shop.menu.shop_creation.ui.BasicInfoStep
-import com.example.kaferest.presentation.shop.menu.shop_creation.ui.LocationStep
 import com.example.kaferest.ui.theme.Typography
 
 @OptIn(ExperimentalMaterial3Api::class)

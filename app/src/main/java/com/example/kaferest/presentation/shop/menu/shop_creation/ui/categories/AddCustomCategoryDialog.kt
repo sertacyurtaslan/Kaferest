@@ -1,4 +1,4 @@
-package com.example.kaferest.presentation.admin.menu.shop_creation.ui.categories
+package com.example.kaferest.presentation.shop.menu.shop_creation.ui.categories
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
