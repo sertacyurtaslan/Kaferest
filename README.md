@@ -1,9 +1,5 @@
 # Kaferest - Modern Coffee Shop Management Platform
 
-<div align="center">
-  <img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" alt="Kaferest Logo" width="120"/>
-</div>
-
 ## 📱 About
 
 Kaferest is a modern Android application that bridges the gap between coffee shop owners and their customers. Built with Jetpack Compose and following Material Design 3 principles, it provides a seamless experience for both shop management and customer interaction.
