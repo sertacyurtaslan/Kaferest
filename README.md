@@ -132,6 +132,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Contact
 
-Your Name - [@yourtwitter](https://twitter.com/yourtwitter) - email@example.com
+Sertaç Bera Yurtaslan - sertacyurtaslan@gmail.com
 
-Project Link: [https://github.com/yourusername/Kaferest](https://github.com/yourusername/Kaferest) 
+Project Link: [https://github.com/sertacyurtaslan/Kaferest](https://github.com/sertacyurtaslan/Kaferest) 
